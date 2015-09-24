@@ -105,10 +105,10 @@ public class ItemController : MonoBehaviour
 					if (ProduceClone)
 					{
 						if (enter.Item == null)
-							LibraryController.Instance.CreateCloneItem(enter, press.Item);
+							InventoryExtension.CreateCloneItem(enter, press.Item);
 					}
 					else
-						LibraryController.Instance.SwapItemsInCell(press, enter);
+						InventoryExtension.SwapItemsInCell(press, enter);
 				}
 		}
 
