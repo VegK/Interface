@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -10,6 +8,18 @@ public class ItemController : MonoBehaviour
 	#region Properties
 	#region Public
 	public Image ImageItem;
+	/// <summary>
+	/// Тип предмета.
+	/// </summary>
+	public ItemType Type { get; set; }
+	/// <summary>
+	/// Название предмета.
+	/// </summary>
+	public string Title { get; set; }
+	/// <summary>
+	/// Описание предмета.
+	/// </summary>
+	public string Description { get; set; }
 	#endregion
 	#region Private
 	private GameObject _cloneMove;

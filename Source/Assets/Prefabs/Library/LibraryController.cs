@@ -1,10 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Xml.Serialization;
 using UnityEngine;
 
 public class LibraryController : MonoBehaviour
 {
+	public const string ITEMS_PATH = "Items\\";
+	public const string ITEM_FILE_EXTENSION = ".item";
+
 	#region Properties
 	#region Public
 	public static LibraryController Instance
@@ -19,12 +23,11 @@ public class LibraryController : MonoBehaviour
 	public GameObject Content;
 	public GameObject PrefabCell;
 	public GameObject PrefabItem;
-
-	public int Size = 10;
 	#endregion
 	#region Private
 	private static LibraryController _instance;
 	private List<CellController> _cells;
+	private List<Item> _items;
 	#endregion
 	#endregion
 
@@ -63,10 +66,14 @@ public class LibraryController : MonoBehaviour
 			return;
 		}
 
-		var cellSize = PrefabCell.GetComponent<RectTransform>().sizeDelta;
+		LoadItemsFromFiles();
+		FillLibrary();
+
+		var size = _items.Count;
+        var cellSize = PrefabCell.GetComponent<RectTransform>().sizeDelta;
 		var contentSize = Content.GetComponent<RectTransform>().sizeDelta;
 		var columns = Mathf.Floor(contentSize.x / cellSize.x);
-		var lines = Mathf.Ceil(Size / columns);
+		var lines = Mathf.Ceil(size / columns);
 		var newHeight = cellSize.y * lines;
 
 		// Меняем параметры подложки.
@@ -80,7 +87,7 @@ public class LibraryController : MonoBehaviour
 		Content.transform.localPosition = pos;
 
 		// Создаём список пустых ячеек.
-		_cells = new List<CellController>();
+		/*_cells = new List<CellController>();
 		for (int i = 0; i < Size; i++)
 		{
 			var cell = Instantiate(PrefabCell);
@@ -89,20 +96,78 @@ public class LibraryController : MonoBehaviour
 
 			ctrl = cell.GetComponent<CellController>();
 			_cells.Add(ctrl);
-		}
-
-		// Загружаем предметы.
-		LoadItem();
+		}*/
     }
-
-	private void LoadItem()
+	/// <summary>
+	/// Загрузить информацию о предметах из файлов.
+	/// </summary>
+	private void LoadItemsFromFiles()
 	{
-		var item = Instantiate(PrefabItem);
-		var ctrl = item.GetComponent<ItemController>();
-		item.transform.SetParent(_cells[0].gameObject.transform);
-		item.transform.localPosition = Vector2.zero;
-		_cells[0].Item = ctrl;
-    }
+		_items = new List<Item>();
+        var path = Application.dataPath + "\\" + ITEMS_PATH;
+		if (!Directory.Exists(path))
+			return;
+
+		try
+		{
+			var dir = new DirectoryInfo(path);
+			var ser = new XmlSerializer(typeof(Item));
+
+			foreach (FileInfo file in dir.GetFiles("*" + ITEM_FILE_EXTENSION, SearchOption.AllDirectories))
+				if (file.Extension == ITEM_FILE_EXTENSION)
+					using (FileStream fs = new FileStream(file.FullName, FileMode.Open, FileAccess.Read))
+					{
+						var item = ser.Deserialize(fs) as Item;
+						if (item != null)
+							_items.Add(item);
+						fs.Close();
+					}
+		}
+		catch { }
+	}
+	/// <summary>
+	/// Заполнить ячейки библиотеки предметами.
+	/// </summary>
+	private void FillLibrary()
+	{
+		_cells = new List<CellController>();
+
+        var path = Application.dataPath + "\\" + ITEMS_PATH + "\\";
+		var i = 1;
+		foreach (Item item in _items)
+		{
+			if (!File.Exists(path + item.FileNameImage))
+				continue;
+
+			// Создаём пустую ячейку
+			var cell = Instantiate(PrefabCell);
+			cell.name = "Cell" + i;
+			cell.transform.SetParent(Content.transform);
+			var cellCtrl = cell.GetComponent<CellController>();
+			_cells.Add(cellCtrl);
+
+			// Создаём объект предмета
+			var obj = Instantiate(PrefabItem);
+			obj.name = item.Name;
+            obj.transform.SetParent(cell.transform);
+			obj.transform.localPosition = Vector2.zero;
+
+			// Заполняем параметры предмета
+			var itemCtrl = obj.GetComponent<ItemController>();
+			itemCtrl.Type = (ItemType)item.Type;
+			itemCtrl.Title = item.Name;
+			itemCtrl.Description = item.Description;
+
+			// Грузим изображение предмета
+			var bytes = File.ReadAllBytes(path + item.FileNameImage);
+			var tex2d = new Texture2D(1, 1);
+			tex2d.LoadImage(bytes);
+			itemCtrl.ImageItem.sprite = Sprite.Create(tex2d, new Rect(0, 0, tex2d.width, tex2d.height), Vector2.zero);
+
+			cellCtrl.Item = itemCtrl;
+			i++;
+		}
+	}
 	#endregion
 	#endregion
 }
