@@ -43,5 +43,6 @@ Temporary Items
 .apdisk
 
 /Source/*
+/Source/Assets/UnityVS/*
 !/Source/Assets
 !/Source/ProjectSettings
