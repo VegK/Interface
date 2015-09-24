@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+  <FileNameImage>Accessories\item_19.png</FileNameImage>
+  <Name>Брутальное кольцо</Name>
+  <Description>Кольцо с железными вставками. Удобно ковырятся в зубах.</Description>
+  <Type>1</Type>
+</Item>

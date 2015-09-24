@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+  <FileNameImage>Weapons\item_07.png</FileNameImage>
+  <Name>Красивый топор</Name>
+  <Description>Старый, но до сих пор красивый одноручный топор.</Description>
+  <Type>3</Type>
+</Item>
