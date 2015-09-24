@@ -50,6 +50,20 @@ public class LibraryController : MonoBehaviour
 		to.Item = from.Item;
 		from.Item = tempItem;
 	}
+
+	/// <summary>
+	/// Создать клона указанного предмета в указанной ячейки.
+	/// </summary>
+	/// <param name="cell">Ячейка в которой будет создан клон.</param>
+	/// <param name="item">Предмет для клонирования.</param>
+	public void CreateCloneItem(CellController cell, ItemController item)
+	{
+		var obj = Instantiate(item.gameObject);
+		obj.transform.SetParent(cell.transform, false);
+
+		var ctrl = obj.GetComponent<ItemController>();
+		cell.Item = ctrl;
+	}
 	#endregion
 	#region Private
 	private void Awake()
@@ -86,18 +100,9 @@ public class LibraryController : MonoBehaviour
 		pos.y = -contentSize.y / 2;
 		Content.transform.localPosition = pos;
 
-		// Создаём список пустых ячеек.
-		/*_cells = new List<CellController>();
-		for (int i = 0; i < Size; i++)
-		{
-			var cell = Instantiate(PrefabCell);
-			cell.name = "Cell" + (i + 1);
-			cell.transform.SetParent(Content.transform);
-
-			ctrl = cell.GetComponent<CellController>();
-			_cells.Add(ctrl);
-		}*/
-    }
+		// TODO: пустая ячейка для тестов
+		CreateCell("FreeCell");
+	}
 	/// <summary>
 	/// Загрузить информацию о предметах из файлов.
 	/// </summary>
@@ -132,42 +137,62 @@ public class LibraryController : MonoBehaviour
 	{
 		_cells = new List<CellController>();
 
-        var path = Application.dataPath + "\\" + ITEMS_PATH + "\\";
+		var path = Application.dataPath + "\\" + ITEMS_PATH + "\\";
 		var i = 1;
-		foreach (Item item in _items)
+		foreach (Item itemLib in _items)
 		{
-			if (!File.Exists(path + item.FileNameImage))
+			if (!File.Exists(path + itemLib.FileNameImage))
 				continue;
 
-			// Создаём пустую ячейку
-			var cell = Instantiate(PrefabCell);
-			cell.name = "Cell" + i;
-			cell.transform.SetParent(Content.transform);
-			var cellCtrl = cell.GetComponent<CellController>();
-			_cells.Add(cellCtrl);
+			var cell = CreateCell("Cell" + i);
+			var item = CreateItem(itemLib);
+			item.ProduceClone = true;
 
-			// Создаём объект предмета
-			var obj = Instantiate(PrefabItem);
-			obj.name = item.Name;
-            obj.transform.SetParent(cell.transform);
-			obj.transform.localPosition = Vector2.zero;
-
-			// Заполняем параметры предмета
-			var itemCtrl = obj.GetComponent<ItemController>();
-			itemCtrl.Type = (ItemType)item.Type;
-			itemCtrl.Title = item.Name;
-			itemCtrl.Description = item.Description;
-
-			// Грузим изображение предмета
-			var bytes = File.ReadAllBytes(path + item.FileNameImage);
-			var tex2d = new Texture2D(1, 1);
-			tex2d.LoadImage(bytes);
-			itemCtrl.ImageItem.sprite = Sprite.Create(tex2d, new Rect(0, 0, tex2d.width, tex2d.height), Vector2.zero);
-
-			cellCtrl.Item = itemCtrl;
+			item.transform.SetParent(cell.transform, false);
+			cell.Item = item;
 			i++;
 		}
 	}
+	/// <summary>
+	/// Создать объект ячейки инвентаря.
+	/// </summary>
+	/// <param name="name">Название ячейки.</param>
+	/// <returns>Класс созданной ячейки.</returns>
+	private CellController CreateCell(string name)
+	{
+		var cell = Instantiate(PrefabCell);
+		cell.name = name;
+		cell.transform.SetParent(Content.transform);
+
+		var cellCtrl = cell.GetComponent<CellController>();
+		_cells.Add(cellCtrl);
+		return cellCtrl;
+	}
+	/// <summary>
+	/// Создать объект предмета на основании класса предмета.
+	/// </summary>
+	/// <param name="item">Класс предмета.</param>
+	/// <returns>Класс созданного предмета.</returns>
+	public ItemController CreateItem(Item item)
+	{
+		var path = Application.dataPath + "\\" + ITEMS_PATH + "\\";
+
+		var obj = Instantiate(PrefabItem);
+		obj.name = item.Name;
+		obj.transform.position = Vector2.zero;
+
+		var bytes = File.ReadAllBytes(path + item.FileNameImage);
+		var tex2d = new Texture2D(1, 1);
+		tex2d.LoadImage(bytes);
+
+		var itemCtrl = obj.GetComponent<ItemController>();
+		itemCtrl.ImageItem.sprite = Sprite.Create(tex2d, new Rect(0, 0, tex2d.width, tex2d.height), Vector2.zero);
+
+		itemCtrl.Type = (ItemType)item.Type;
+		itemCtrl.Title = item.Name;
+		itemCtrl.Description = item.Description;
+		return itemCtrl;
+    }
 	#endregion
 	#endregion
 }
