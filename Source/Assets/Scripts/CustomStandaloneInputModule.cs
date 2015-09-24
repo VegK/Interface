@@ -4,6 +4,12 @@ using UnityEngine.EventSystems;
 
 public class CustomStandaloneInputModule : StandaloneInputModule
 {
+	/// <summary>
+	/// Получить начальный и конечный объект при перемещении.
+	/// </summary>
+	/// <typeparam name="T">Тип объекта.</typeparam>
+	/// <param name="enter">Куда перемещаем. Объект который оказался под курсором после перемещения.</param>
+	/// <param name="press">Откуда перемещаем. Объект который был под курсором в начале перемещения.</param>
 	public void GetDropData<T>(out T enter, out T press)
 	{
 		enter = default(T);
