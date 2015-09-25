@@ -72,6 +72,9 @@ public class ItemController : MonoBehaviour
 	}
 	public void OnPointerDown(BaseEventData data)
 	{
+		var pointer = data as PointerEventData;
+		if (pointer != null && pointer.button != PointerEventData.InputButton.Left)
+			return;
 		if (FixedCell && !ProduceClone)
 			return;
 
@@ -85,6 +88,9 @@ public class ItemController : MonoBehaviour
 	}
 	public void OnPointerUp(BaseEventData data)
 	{
+		var pointer = data as PointerEventData;
+		if (pointer != null && pointer.button != PointerEventData.InputButton.Left)
+			return;
 		if (FixedCell && !ProduceClone)
 			return;
 
@@ -126,7 +132,7 @@ public class ItemController : MonoBehaviour
 			return;
 
 		var pointer = data as PointerEventData;
-		if (pointer != null)
+		if (pointer != null && pointer.button == PointerEventData.InputButton.Left)
 			_cloneMove.transform.position = pointer.position;
 	}
 	#endregion
