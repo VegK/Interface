@@ -79,6 +79,10 @@ public class LibraryController : BaseInventory
 	/// </summary>
 	private void FillLibrary()
 	{
+		// Очистка контента от ячеек.
+		var childrens = Content.GetComponentsInChildren<CellController>();
+		foreach (var child in childrens)
+			Destroy(child.gameObject);
 		Cells.Clear();
 
 		var path = Application.dataPath + "\\" + Parameters.ITEMS_PATH + "\\";
