@@ -24,6 +24,8 @@ using System.Xml.Serialization;
 [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
 public partial class Item {
     
+    private int indexField;
+    
     private string fileNameImageField;
     
     private string nameField;
@@ -31,6 +33,16 @@ public partial class Item {
     private string descriptionField;
     
     private int typeField;
+    
+    /// <remarks/>
+    public int Index {
+        get {
+            return this.indexField;
+        }
+        set {
+            this.indexField = value;
+        }
+    }
     
     /// <remarks/>
     public string FileNameImage {

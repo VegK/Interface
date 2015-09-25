@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Item>
+  <Index>10</Index>
   <FileNameImage>Armor\item_10.png</FileNameImage>
   <Name>Старый железный щит</Name>
   <Description>Посредственно выполненный железный щит.</Description>

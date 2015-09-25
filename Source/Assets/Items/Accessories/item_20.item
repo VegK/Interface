@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Item>
+  <Index>20</Index>
   <FileNameImage>Accessories\item_20.png</FileNameImage>
   <Name>Золотая заколка</Name>
   <Description>Заколка выполненная из чистого золота.</Description>

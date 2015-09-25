@@ -4,6 +4,7 @@
 	<xs:element name="Item">
 		<xs:complexType>
 			<xs:sequence>
+				<xs:element name="Index" type="xs:int"/>
 				<xs:element name="FileNameImage" type="xs:string"/>
 				<xs:element name="Name" type="xs:string"/>
 				<xs:element name="Description" type="xs:string"/>
