@@ -147,10 +147,7 @@ public abstract class BaseInventory : MonoBehaviour
 			return;
 
 		for (int i = 0; i < Size; i++)
-		{
-			var cell = CreateCell("Cell" + (i + 1));
-			Cells.Add(cell);
-		}
+			CreateCell("Cell" + (i + 1));
 	}
 	#endregion
 	#endregion
