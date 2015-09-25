@@ -136,7 +136,8 @@ public abstract class BaseInventory : MonoBehaviour
 	{
 		Cells = new List<CellController>();
         CreatingCells();
-    }
+		SetHeightContent();
+	}
 	private void CreatingCells()
 	{
 		if (Size == 0)

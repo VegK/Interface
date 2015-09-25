@@ -17,11 +17,7 @@ public class InventoryController : BaseInventory
 
 	#endregion
 	#region Private
-	protected override void Start()
-	{
-		base.Start();
-		SetHeightContent();
-	}
+
 	#endregion
 	#endregion
 }
