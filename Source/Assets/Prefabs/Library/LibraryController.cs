@@ -15,6 +15,8 @@ public class LibraryController : BaseInventory
 		get
 		{
 			if (_instance == null)
+				_instance = GameObject.FindObjectOfType<LibraryController>();
+			if (_instance == null)
 				throw new Exception(string.Format("На сцене отсутствует объект с компонентом \"{0}\".", typeof(LibraryController)));
 			return _instance;
 		}

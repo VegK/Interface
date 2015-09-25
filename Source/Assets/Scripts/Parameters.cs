@@ -18,6 +18,8 @@ public class Parameters : MonoBehaviour
 		get
 		{
 			if (_instance == null)
+				_instance = GameObject.FindObjectOfType<Parameters>();
+			if (_instance == null)
 				throw new Exception(string.Format("На сцене отсутствует объект с компонентом \"{0}\".", typeof(Parameters)));
 			return _instance;
 		}
