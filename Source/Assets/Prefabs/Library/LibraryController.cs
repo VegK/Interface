@@ -30,7 +30,15 @@ public class LibraryController : BaseInventory
 
 	#region Methods
 	#region Public
-
+	/// <summary>
+	/// Получить базовый предмет по индексу.
+	/// </summary>
+	/// <param name="index">Индекс базового предмета.</param>
+	/// <returns>Базовый предмет, если не удалось найти, то возвращает NULL.</returns>
+	public Item GetItem(int index)
+	{
+		return _items.Find(i => i.Index == index);
+	}
 	#endregion
 	#region Private
 	private void Awake()
@@ -81,7 +89,7 @@ public class LibraryController : BaseInventory
 	/// </summary>
 	private void FillLibrary()
 	{
-		// Очистка контента от ячеек.
+		// Очистка контента от объектов ячеек.
 		var childrens = Content.GetComponentsInChildren<CellController>();
 		foreach (var child in childrens)
 			Destroy(child.gameObject);
@@ -98,8 +106,7 @@ public class LibraryController : BaseInventory
 			var item = CreateItem(itemLib);
 			item.ProduceClone = true;
 
-			item.transform.SetParent(cell.transform, false);
-			cell.Item = item;
+			SetItemInCell(item, cell);
 			i++;
 		}
 	}

@@ -126,7 +126,8 @@ public class ItemController : MonoBehaviour
 		}
 
 		Destroy(_cloneMove);
-	}
+		_cloneMove = null;
+    }
 	public void OnDrag(BaseEventData data)
 	{
 		if (FixedCell && !ProduceClone)

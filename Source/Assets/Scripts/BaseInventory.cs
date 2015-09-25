@@ -72,14 +72,13 @@ public abstract class BaseInventory : MonoBehaviour
 	/// <param name="item">Предмет для клонирования.</param>
 	public static GameObject CreateCloneItem(CellController cell, ItemController item)
 	{
-		var obj = Instantiate(item.gameObject);
-		obj.transform.SetParent(cell.transform, false);
+		var clone = Instantiate(item.gameObject);
+		var itemClone = clone.GetComponent<ItemController>();
 
-		var ctrl = obj.GetComponent<ItemController>();
-		ctrl.BaseItem = item.BaseItem;
-		cell.Item = ctrl;
+		itemClone.BaseItem = item.BaseItem;
+		SetItemInCell(itemClone, cell);
 
-		return obj;
+		return clone;
 	}
 	/// <summary>
 	/// Уничтожить объект в ячейке.
@@ -132,6 +131,12 @@ public abstract class BaseInventory : MonoBehaviour
 		itemCtrl.ImageItem.sprite = Sprite.Create(tex2d, new Rect(0, 0, tex2d.width, tex2d.height), Vector2.zero);
 		itemCtrl.BaseItem = item;
 		return itemCtrl;
+	}
+
+	public static void SetItemInCell(ItemController item, CellController cell)
+	{
+		item.transform.SetParent(cell.transform, false);
+		cell.Item = item;
 	}
 	#endregion
 	#region Private
