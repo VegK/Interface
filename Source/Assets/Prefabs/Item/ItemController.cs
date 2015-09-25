@@ -57,6 +57,7 @@ public class ItemController : MonoBehaviour
 	private GameObject _cloneMove;
 	private bool _fixedCell;
 	private bool _produceClone;
+	private Vector2 _size;
 	#endregion
 	#endregion
 
@@ -64,12 +65,15 @@ public class ItemController : MonoBehaviour
 	#region Public
 	public void OnPointerEnter(BaseEventData data)
 	{
-		
+		var pos = transform.position;
+		pos.x += _size.x / 2;
+		pos.y += _size.y / 2;
+        Parameters.Instance.ToolTip.Show(pos, Title, Description);
 	}
 	public void OnPointerExit(BaseEventData data)
 	{
-		
-	}
+		Parameters.Instance.ToolTip.Hide(1);
+    }
 	public void OnPointerDown(BaseEventData data)
 	{
 		var pointer = data as PointerEventData;
@@ -77,6 +81,8 @@ public class ItemController : MonoBehaviour
 			return;
 		if (FixedCell && !ProduceClone)
 			return;
+		Parameters.Instance.ToolTip.Hide();
+		Parameters.Instance.ToolTip.FixedHide = true;
 
 		_cloneMove = Instantiate(ImageItem.gameObject);
 		_cloneMove.SetActive(true);
@@ -94,6 +100,7 @@ public class ItemController : MonoBehaviour
 		if (FixedCell && !ProduceClone)
 			return;
 
+		Parameters.Instance.ToolTip.FixedHide = false;
 		_cloneMove.SetActive(false);
         ImageItem.gameObject.SetActive(true);
 
@@ -135,9 +142,22 @@ public class ItemController : MonoBehaviour
 		if (pointer != null && pointer.button == PointerEventData.InputButton.Left)
 			_cloneMove.transform.position = pointer.position;
 	}
+	/// <summary>
+	/// Копировать свойства предмета на указанный.
+	/// </summary>
+	/// <param name="item">Предмет в который будут копироваться свойства.</param>
+	public void CopyProperties(ItemController item)
+	{
+		item.Type = this.Type;
+		item.Title = this.Title;
+		item.Description = this.Description;
+	}
 	#endregion
 	#region Private
-
+	private void Start()
+	{
+		_size = GetComponent<RectTransform>().sizeDelta;
+	}
 	#endregion
 	#endregion
 }

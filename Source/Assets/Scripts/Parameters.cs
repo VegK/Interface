@@ -11,6 +11,8 @@ public class Parameters : MonoBehaviour
 	public GameObject PrefabCell;
 	public GameObject PrefabItem;
 
+	public ToolTipController ToolTip;
+
 	public static Parameters Instance
 	{
 		get
@@ -42,7 +44,9 @@ public class Parameters : MonoBehaviour
 		var ctrlItem = PrefabItem.GetComponent<ItemController>();
 		if (ctrlItem == null)
 			throw new Exception(string.Format("Отсутствует компонент \"{0}\" у префаба предмета.", typeof(ItemController)));
-	}
+
+		ToolTip.gameObject.SetActive(false);
+    }
 	#endregion
 	#endregion
 }

@@ -76,6 +76,7 @@ public abstract class BaseInventory : MonoBehaviour
 
 		var ctrl = obj.GetComponent<ItemController>();
 		cell.Item = ctrl;
+		item.CopyProperties(ctrl);
 
 		return obj;
 	}
