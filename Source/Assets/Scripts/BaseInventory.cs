@@ -2,6 +2,7 @@
 using System.Collections;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 public abstract class BaseInventory : MonoBehaviour
 {
@@ -75,8 +76,8 @@ public abstract class BaseInventory : MonoBehaviour
 		obj.transform.SetParent(cell.transform, false);
 
 		var ctrl = obj.GetComponent<ItemController>();
+		ctrl.BaseItem = item.BaseItem;
 		cell.Item = ctrl;
-		item.CopyProperties(ctrl);
 
 		return obj;
 	}
@@ -102,7 +103,11 @@ public abstract class BaseInventory : MonoBehaviour
 		cell.transform.SetParent(Content.transform);
 
 		var cellCtrl = cell.GetComponent<CellController>();
-		cellCtrl.Type = CellType.Standart;
+		var index = 1;
+		if (Cells.Count > 0)
+			index = Cells.Max(c => c.Index) + 1;
+		cellCtrl.Index = index;
+        cellCtrl.Type = CellType.Standart;
 		Cells.Add(cellCtrl);
 		return cellCtrl;
 	}
@@ -125,10 +130,7 @@ public abstract class BaseInventory : MonoBehaviour
 
 		var itemCtrl = obj.GetComponent<ItemController>();
 		itemCtrl.ImageItem.sprite = Sprite.Create(tex2d, new Rect(0, 0, tex2d.width, tex2d.height), Vector2.zero);
-
-		itemCtrl.Type = (ItemType)item.Type;
-		itemCtrl.Title = item.Name;
-		itemCtrl.Description = item.Description;
+		itemCtrl.BaseItem = item;
 		return itemCtrl;
 	}
 	#endregion

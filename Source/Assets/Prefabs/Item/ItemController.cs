@@ -8,18 +8,11 @@ public class ItemController : MonoBehaviour
 	#region Properties
 	#region Public
 	public Image ImageItem;
+
 	/// <summary>
-	/// Тип предмета.
+	/// Базовый предмет из библиотеки.
 	/// </summary>
-	public ItemType Type { get; set; }
-	/// <summary>
-	/// Название предмета.
-	/// </summary>
-	public string Title { get; set; }
-	/// <summary>
-	/// Описание предмета.
-	/// </summary>
-	public string Description { get; set; }
+	public Item BaseItem { get; set; }
 	/// <summary>
 	/// Предмет не может перемещатся из своей ячейки.
 	/// </summary>
@@ -65,8 +58,11 @@ public class ItemController : MonoBehaviour
 	#region Public
 	public void OnPointerEnter(BaseEventData data)
 	{
-		var pos = transform.position;
-        Parameters.Instance.ToolTip.Show(pos, _size, Title, Description);
+		if (BaseItem != null)
+		{
+			var pos = transform.position;
+			Parameters.Instance.ToolTip.Show(pos, _size, BaseItem.Name, BaseItem.Description);
+		}
 	}
 	public void OnPointerExit(BaseEventData data)
 	{
@@ -139,16 +135,6 @@ public class ItemController : MonoBehaviour
 		var pointer = data as PointerEventData;
 		if (pointer != null && pointer.button == PointerEventData.InputButton.Left)
 			_cloneMove.transform.position = pointer.position;
-	}
-	/// <summary>
-	/// Копировать свойства предмета на указанный.
-	/// </summary>
-	/// <param name="item">Предмет в который будут копироваться свойства.</param>
-	public void CopyProperties(ItemController item)
-	{
-		item.Type = this.Type;
-		item.Title = this.Title;
-		item.Description = this.Description;
 	}
 	#endregion
 	#region Private

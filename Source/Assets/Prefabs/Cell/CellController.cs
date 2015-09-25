@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class CellController : MonoBehaviour
 {
 	#region Properties
 	#region Public
+	public int Index;
 	public CellType Type;
 
 	public ItemController Item { get; set; }
