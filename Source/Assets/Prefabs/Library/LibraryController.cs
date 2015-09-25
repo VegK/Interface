@@ -37,8 +37,9 @@ public class LibraryController : BaseInventory
 		_items = new List<Item>();
 	}
 
-	private void Start()
+	protected override void Start()
 	{
+		base.Start();
 		LoadItemsFromFiles();
 		FillLibrary();
 		SetHeightContent(_items.Count);

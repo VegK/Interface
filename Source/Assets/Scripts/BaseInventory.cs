@@ -126,7 +126,22 @@ public abstract class BaseInventory : MonoBehaviour
 	}
 	#endregion
 	#region Private
+	protected virtual void Start()
+	{
+		CreatingCells();
+    }
 
+	private void CreatingCells()
+	{
+		if (Size == 0)
+			return;
+
+		for (int i = 0; i < Size; i++)
+		{
+			var cell = CreateCell("Cell" + (i + 1));
+			Cells.Add(cell);
+		}
+	}
 	#endregion
 	#endregion
 }
