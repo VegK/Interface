@@ -31,15 +31,35 @@ public class ToolTipController : MonoBehaviour
 	/// </summary>
 	/// <param name="title">Название предмета.</param>
 	/// <param name="description">Описание предмета.</param>
-	public void Show(Vector2 position, string title, string description)
+	public void Show(Vector2 position, Vector2 sizeItem, string title, string description)
 	{
 		if (FixedHide)
 			return;
 		CancelInvoke("HideToolTip");
 
-		position.x += _sizeToolTip.x / 2;
-		position.y -= _sizeToolTip.y / 2;
+
+		if (position.x + _sizeToolTip.x > Screen.width)
+		{
+			position.x -= _sizeToolTip.x / 2;
+			position.x -= sizeItem.x / 2;
+		}
+		else
+		{
+			position.x += _sizeToolTip.x / 2;
+			position.x += sizeItem.x / 2;
+		}
+		if (position.y - _sizeToolTip.y > 0)
+		{
+			position.y -= _sizeToolTip.y / 2;
+			position.y += sizeItem.y / 2;
+		}
+		else
+		{
+			position.y += _sizeToolTip.y / 2;
+			position.y -= sizeItem.y / 2;
+		}
 		transform.position = position;
+
 
 		Title.text = title;
 		Description.text = description;

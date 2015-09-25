@@ -66,9 +66,7 @@ public class ItemController : MonoBehaviour
 	public void OnPointerEnter(BaseEventData data)
 	{
 		var pos = transform.position;
-		pos.x += _size.x / 2;
-		pos.y += _size.y / 2;
-        Parameters.Instance.ToolTip.Show(pos, Title, Description);
+        Parameters.Instance.ToolTip.Show(pos, _size, Title, Description);
 	}
 	public void OnPointerExit(BaseEventData data)
 	{
