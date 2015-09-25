@@ -4,6 +4,8 @@ public class CellController : MonoBehaviour
 {
 	#region Properties
 	#region Public
+	public CellType Type;
+
 	public ItemController Item { get; set; }
 	#endregion
 	#region Private

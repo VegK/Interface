@@ -12,7 +12,7 @@ public abstract class BaseInventory : MonoBehaviour
 	public int Size;
 	#endregion
 	#region Private
-	protected List<CellController> Cells = new List<CellController>();
+	protected List<CellController> Cells;
 	#endregion
 	#endregion
 
@@ -25,7 +25,6 @@ public abstract class BaseInventory : MonoBehaviour
 	{
 		SetHeightContent(Size);
     }
-
 	/// <summary>
 	/// Установить высоту объекта контента.
 	/// </summary>
@@ -48,7 +47,6 @@ public abstract class BaseInventory : MonoBehaviour
 		pos.y = -contentSize.y / 2;
 		Content.transform.localPosition = pos;
 	}
-
 	/// <summary>
 	/// Поменять местами предметы в ячейках.
 	/// </summary>
@@ -66,7 +64,6 @@ public abstract class BaseInventory : MonoBehaviour
 		to.Item = from.Item;
 		from.Item = tempItem;
 	}
-
 	/// <summary>
 	/// Создать клона указанного предмета в указанной ячейки.
 	/// </summary>
@@ -82,7 +79,16 @@ public abstract class BaseInventory : MonoBehaviour
 
 		return obj;
 	}
-
+	/// <summary>
+	/// Уничтожить объект в ячейке.
+	/// </summary>
+	/// <param name="cell">Ячейка с предметом.</param>
+	public static void RecycleItem(CellController cell)
+	{
+		if (cell.Item != null)
+			Destroy(cell.Item.gameObject);
+		cell.Item = null;
+	}
 	/// <summary>
 	/// Создать объект ячейки инвентаря.
 	/// </summary>
@@ -95,10 +101,10 @@ public abstract class BaseInventory : MonoBehaviour
 		cell.transform.SetParent(Content.transform);
 
 		var cellCtrl = cell.GetComponent<CellController>();
+		cellCtrl.Type = CellType.Standart;
 		Cells.Add(cellCtrl);
 		return cellCtrl;
 	}
-
 	/// <summary>
 	/// Создать объект предмета на основании класса предмета.
 	/// </summary>
@@ -128,9 +134,9 @@ public abstract class BaseInventory : MonoBehaviour
 	#region Private
 	protected virtual void Start()
 	{
-		CreatingCells();
+		Cells = new List<CellController>();
+        CreatingCells();
     }
-
 	private void CreatingCells()
 	{
 		if (Size == 0)

@@ -100,15 +100,21 @@ public class ItemController : MonoBehaviour
 			if (enter != null && press != null)
 				if (enter.Item == null || !enter.Item.FixedCell)
 				{
-					// Если предмет может создавать свои копии, то создаём
-					// в противном случаи меняем местами предметы.
-					if (ProduceClone)
+					if (enter.Type == CellType.Recycle)
 					{
-						if (enter.Item == null)
-							BaseInventory.CreateCloneItem(enter, press.Item);
-					}
+						if (!press.Item.FixedCell)
+							BaseInventory.RecycleItem(press);
+                    }
 					else
-						BaseInventory.SwapItemsInCell(press, enter);
+						// Если предмет может создавать свои копии, то создаём
+						// в противном случаи меняем местами предметы.
+						if (ProduceClone)
+						{
+							if (enter.Item == null)
+								BaseInventory.CreateCloneItem(enter, press.Item);
+						}
+						else
+							BaseInventory.SwapItemsInCell(press, enter);
 				}
 		}
 
