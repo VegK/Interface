@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class InventoryController : MonoBehaviour
+public class InventoryController : BaseInventory
 {
 	#region Properties
 	#region Public

@@ -4,9 +4,8 @@ using System.IO;
 using System.Xml.Serialization;
 using UnityEngine;
 
-public class LibraryController : MonoBehaviour
+public class LibraryController : BaseInventory
 {
-	public const string ITEMS_PATH = "Items\\";
 	public const string ITEM_FILE_EXTENSION = ".item";
 
 	#region Properties
@@ -20,13 +19,9 @@ public class LibraryController : MonoBehaviour
 			return _instance;
 		}
 	}
-	public GameObject Content;
-	public GameObject PrefabCell;
-	public GameObject PrefabItem;
 	#endregion
 	#region Private
 	private static LibraryController _instance;
-	private List<CellController> _cells;
 	private List<Item> _items;
 	#endregion
 	#endregion
@@ -39,47 +34,24 @@ public class LibraryController : MonoBehaviour
 	private void Awake()
 	{
 		_instance = this;
+		_items = new List<Item>();
 	}
 
 	private void Start()
 	{
-		var ctrl = PrefabCell.GetComponent<CellController>();
-		if (ctrl == null)
-		{
-			Debug.Log(string.Format("Отсутствует компонент \"{0}\" у префаба клетки.", typeof(CellController)));
-			return;
-		}
-
 		LoadItemsFromFiles();
 		FillLibrary();
-
-		var size = _items.Count;
-        var cellSize = PrefabCell.GetComponent<RectTransform>().sizeDelta;
-		var contentSize = Content.GetComponent<RectTransform>().sizeDelta;
-		var columns = Mathf.Floor(contentSize.x / cellSize.x);
-		var lines = Mathf.Ceil(size / columns);
-		var newHeight = cellSize.y * lines;
-
-		// Меняем параметры подложки.
-		if (Content.GetComponent<RectTransform>().sizeDelta.y < newHeight)
-		{
-			contentSize.y = newHeight;
-			Content.GetComponent<RectTransform>().sizeDelta = contentSize;
-		}
-		var pos = Content.transform.localPosition;
-		pos.y = -contentSize.y / 2;
-		Content.transform.localPosition = pos;
-
-		// TODO: пустая ячейка для тестов
-		CreateCell("FreeCell");
+		SetHeightContent(_items.Count);
 	}
+
 	/// <summary>
 	/// Загрузить информацию о предметах из файлов.
 	/// </summary>
 	private void LoadItemsFromFiles()
 	{
-		_items = new List<Item>();
-        var path = Application.dataPath + "\\" + ITEMS_PATH;
+		_items.Clear();
+
+		var path = Application.dataPath + "\\" + Parameters.ITEMS_PATH;
 		if (!Directory.Exists(path))
 			return;
 
@@ -100,14 +72,15 @@ public class LibraryController : MonoBehaviour
 		}
 		catch { }
 	}
+
 	/// <summary>
 	/// Заполнить ячейки библиотеки предметами.
 	/// </summary>
 	private void FillLibrary()
 	{
-		_cells = new List<CellController>();
+		Cells.Clear();
 
-		var path = Application.dataPath + "\\" + ITEMS_PATH + "\\";
+		var path = Application.dataPath + "\\" + Parameters.ITEMS_PATH + "\\";
 		var i = 1;
 		foreach (Item itemLib in _items)
 		{
@@ -123,46 +96,6 @@ public class LibraryController : MonoBehaviour
 			i++;
 		}
 	}
-	/// <summary>
-	/// Создать объект ячейки инвентаря.
-	/// </summary>
-	/// <param name="name">Название ячейки.</param>
-	/// <returns>Класс созданной ячейки.</returns>
-	private CellController CreateCell(string name)
-	{
-		var cell = Instantiate(PrefabCell);
-		cell.name = name;
-		cell.transform.SetParent(Content.transform);
-
-		var cellCtrl = cell.GetComponent<CellController>();
-		_cells.Add(cellCtrl);
-		return cellCtrl;
-	}
-	/// <summary>
-	/// Создать объект предмета на основании класса предмета.
-	/// </summary>
-	/// <param name="item">Класс предмета.</param>
-	/// <returns>Класс созданного предмета.</returns>
-	public ItemController CreateItem(Item item)
-	{
-		var path = Application.dataPath + "\\" + ITEMS_PATH + "\\";
-
-		var obj = Instantiate(PrefabItem);
-		obj.name = item.Name;
-		obj.transform.position = Vector2.zero;
-
-		var bytes = File.ReadAllBytes(path + item.FileNameImage);
-		var tex2d = new Texture2D(1, 1);
-		tex2d.LoadImage(bytes);
-
-		var itemCtrl = obj.GetComponent<ItemController>();
-		itemCtrl.ImageItem.sprite = Sprite.Create(tex2d, new Rect(0, 0, tex2d.width, tex2d.height), Vector2.zero);
-
-		itemCtrl.Type = (ItemType)item.Type;
-		itemCtrl.Title = item.Name;
-		itemCtrl.Description = item.Description;
-		return itemCtrl;
-    }
 	#endregion
 	#endregion
 }
