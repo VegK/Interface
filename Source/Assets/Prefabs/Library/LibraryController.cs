@@ -45,12 +45,12 @@ public class LibraryController : BaseInventory
 	{
 		_instance = this;
 		_items = new List<Item>();
+		LoadItemsFromFiles();
 	}
 
 	protected override void Start()
 	{
 		base.Start();
-		LoadItemsFromFiles();
 		FillLibrary();
 		SetHeightContent(_items.Count);
 	}

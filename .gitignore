@@ -45,6 +45,7 @@ Temporary Items
 *.meta
 /Source/*
 /Source/Assets/inventory.xml
+/Source/Assets/equipment.xml
 /Source/Assets/UnityVS/*
 !/Source/Assets
 !/Source/ProjectSettings
