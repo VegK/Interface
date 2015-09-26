@@ -19,16 +19,28 @@ namespace Equipment
 
 		#region Methods
 		#region Public
+		/// <summary>
+		/// Показать/скрыть выделение ячейки.
+		/// </summary>
+		/// <param name="value">Показать/скрыть.</param>
 		public void SetAvailable(bool value)
 		{
 			AvailableImage.SetActive(value);
         }
 		/// <summary>
-		/// Положить предмет в ячейку с определением соответствия типа ячейки и предмета.
+		/// Показать/скрыть изображение заднего фона ячейки.
+		/// </summary>
+		/// <param name="value">Показать/скрыть.</param>
+		public void SetBackground(bool value)
+		{
+			BackgroundImage.SetActive(value);
+		}
+		/// <summary>
+		/// Проверить возможно ли положить предмет в ячейку.
 		/// </summary>
 		/// <param name="item">Предмет.</param>
-		/// <returns>В случаи удачного действия возвращает true.</returns>
-		public override bool SetItem(ItemController item)
+		/// <returns>Можно положить.</returns>
+		public override bool CheckSetItem(ItemController item)
 		{
 			if (item != null)
 			{
@@ -37,7 +49,18 @@ namespace Equipment
 				if (item.BaseItem.GetItemType() != TypeItem)
 					return false;
 			}
-			return base.SetItem(item);
+			return base.CheckSetItem(item);
+		}
+		/// <summary>
+		/// Положить предмет в ячейку с определением соответствия типа ячейки и предмета.
+		/// </summary>
+		/// <param name="item">Предмет.</param>
+		/// <returns>В случаи удачного действия возвращает true.</returns>
+		public override bool SetItem(ItemController item)
+		{
+			if (!CheckSetItem(item))
+				return false;
+            return base.SetItem(item);
 		}
 		#endregion
 		#region Private

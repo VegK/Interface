@@ -37,7 +37,10 @@ public class EquipmentController : MonoBehaviour
 	public void ResetAvailableCells()
 	{
 		foreach (EquipmentCellController cell in _cells)
+		{
 			cell.SetAvailable(false);
+			cell.SetBackground(cell.Item == null);
+		}
 	}
 	/// <summary>
 	/// Выделить ячейки экипировки определённого типа.
@@ -53,7 +56,10 @@ public class EquipmentController : MonoBehaviour
 			if (nullCell)
 				available &= (cell.Item == null);
 			if (item != null && item == cell.Item)
+			{
+				cell.SetBackground(true);
 				available = false;
+			}
 
             cell.SetAvailable(available);
 		}

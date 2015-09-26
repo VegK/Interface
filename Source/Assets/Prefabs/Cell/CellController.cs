@@ -38,12 +38,23 @@ public class CellController : MonoBehaviour
 	#region Methods
 	#region Public
 	/// <summary>
+	/// Проверить возможно ли положить предмет в ячейку.
+	/// </summary>
+	/// <param name="item">Предмет.</param>
+	/// <returns>Можно положить.</returns>
+	public virtual bool CheckSetItem(ItemController item)
+	{
+		return true;
+	}
+	/// <summary>
 	/// Положить предмет в ячейку.
 	/// </summary>
 	/// <param name="item">Предмет.</param>
 	/// <returns>В случаи удачного действия возвращает true.</returns>
 	public virtual bool SetItem(ItemController item)
 	{
+		if (!CheckSetItem(item))
+			return false;
 		if (item != null)
 			item.transform.SetParent(transform, false);
 		this.Item = item;

@@ -57,6 +57,9 @@ public abstract class BaseInventory : MonoBehaviour
 		if (from == null || to == null)
 			return;
 
+		if (!from.CheckSetItem(to.Item))
+			return;
+
 		var tempItem = to.Item;
 		var swap = SetItemInCell(from.Item, to);
 		if (swap)
