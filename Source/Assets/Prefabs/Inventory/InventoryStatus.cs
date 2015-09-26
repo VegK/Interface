@@ -90,7 +90,7 @@ namespace Inventory
 					}
 					else
 					{
-						LogController.Instance.AddString("<color=red>Ошибка инвентаря</color>: файл инвентаря повреждём - загрузка невозможна.");
+						LogController.Instance.AddString("<color=red>Ошибка инвентаря</color>: файл инвентаря повреждён - загрузка невозможна.");
 					}
 				}
 			}

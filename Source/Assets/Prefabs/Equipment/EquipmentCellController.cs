@@ -10,6 +10,7 @@ namespace Equipment
 		#region Public
 		public ItemType TypeItem;
 		public GameObject BackgroundImage;
+		public GameObject AvailableImage;
 		#endregion
 		#region Private
 
@@ -18,6 +19,10 @@ namespace Equipment
 
 		#region Methods
 		#region Public
+		public void SetAvailable(bool value)
+		{
+			AvailableImage.SetActive(value);
+        }
 		/// <summary>
 		/// Положить предмет в ячейку с определением соответствия типа ячейки и предмета.
 		/// </summary>
@@ -36,6 +41,11 @@ namespace Equipment
 		}
 		#endregion
 		#region Private
+		private void Awake()
+		{
+			AvailableImage.SetActive(false);
+        }
+
 		private void OnEnable()
 		{
 			OnChangeItem += ChangeItem;

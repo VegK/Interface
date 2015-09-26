@@ -1,7 +1,8 @@
-﻿using UnityEngine;
-using System.Linq;
-using Equipment;
+﻿using Equipment;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class EquipmentController : MonoBehaviour
 {
@@ -9,23 +10,62 @@ public class EquipmentController : MonoBehaviour
 
 	#region Properties
 	#region Public
-
+	public static EquipmentController Instance
+	{
+		get
+		{
+			if (_instance == null)
+				_instance = GameObject.FindObjectOfType<EquipmentController>();
+			if (_instance == null)
+				throw new Exception(string.Format("На сцене отсутствует объект с компонентом \"{0}\".", typeof(EquipmentController)));
+			return _instance;
+		}
+	}
 	#endregion
 	#region Private
-
+	private static EquipmentController _instance;
+	
+	private List<EquipmentCellController> _cells;
 	#endregion
 	#endregion
 
 	#region Methods
 	#region Public
+	/// <summary>
+	/// Сбросить выделение всех ячеек экипировки.
+	/// </summary>
+	public void ResetAvailableCells()
+	{
+		foreach (EquipmentCellController cell in _cells)
+			cell.SetAvailable(false);
+	}
+	/// <summary>
+	/// Выделить ячейки экипировки определённого типа.
+	/// </summary>
+	/// <param name="typeItem">Тип предмета.</param>
+	/// <param name="nullCell">Выделять только пустые ячейки.</param>
+	/// <param name="item">Не выделять ячейки содержащие данный предмет.</param>
+    public void EnableAvailableCells(ItemType typeItem, bool nullCell, ItemController item)
+	{
+		foreach (EquipmentCellController cell in _cells)
+		{
+			var available = (cell.TypeItem == typeItem);
+			if (nullCell)
+				available &= (cell.Item == null);
+			if (item != null && item == cell.Item)
+				available = false;
 
+            cell.SetAvailable(available);
+		}
+	}
 	#endregion
 	#region Private
 	private void Start()
 	{
+		_cells = new List<EquipmentCellController>();
+		_cells.AddRange(GetComponentsInChildren<EquipmentCellController>());
 		Load();
     }
-
 	private void OnApplicationQuit()
 	{
 		Save();
@@ -35,10 +75,9 @@ public class EquipmentController : MonoBehaviour
 	/// </summary>
 	private void Save()
 	{
-		var equips = GetComponentsInChildren<EquipmentCellController>();
-		if (equips.Count() > 0)
+		if (_cells.Count() > 0)
 		{
-			var status = new EquipmentStatus(equips.ToList());
+			var status = new EquipmentStatus(_cells);
 			status.Save();
 		}
 	}
@@ -51,12 +90,9 @@ public class EquipmentController : MonoBehaviour
 		if (!EquipmentStatus.Load(out status))
 			return;
 
-		var equips = new List<EquipmentCellController>();
-		equips.AddRange(GetComponentsInChildren<EquipmentCellController>());
-
 		foreach (EquipmenCellInfo info in status.Cells)
 		{
-			var cell = equips.Find(c => c.Index == info.IndexCell);
+			var cell = _cells.Find(c => c.Index == info.IndexCell);
 			if (cell == null)
 			{
 				var str = "<color=red>Ошибка экипировки</color>: не удалось найти ячейку с индексом <b>{0}</b>.";

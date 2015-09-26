@@ -94,7 +94,7 @@ namespace Equipment
 					}
 					else
 					{
-						LogController.Instance.AddString("<color=red>Ошибка экипировки</color>: файл экипировки повреждём - загрузка невозможна.");
+						LogController.Instance.AddString("<color=red>Ошибка экипировки</color>: файл экипировки повреждён - загрузка невозможна.");
 					}
 				}
 			}

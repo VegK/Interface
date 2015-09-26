@@ -79,15 +79,18 @@ public class ItemController : MonoBehaviour
 		Parameters.Instance.ToolTip.FixedHide = true;
 
 		_cloneMove = Instantiate(ImageItem.gameObject);
-		_cloneMove.SetActive(true);
-
 		_cloneMove.transform.SetParent(GetComponentInParent<Canvas>().transform);
 		_cloneMove.transform.position = transform.position;
 
 		ImageItem.gameObject.SetActive(ProduceClone);
-	}
+
+		EquipmentController.Instance.ResetAvailableCells();
+		EquipmentController.Instance.EnableAvailableCells(BaseItem.GetItemType(), ProduceClone, this);
+    }
 	public void OnPointerUp(BaseEventData data)
 	{
+		EquipmentController.Instance.ResetAvailableCells();
+
 		var pointer = data as PointerEventData;
 		if (pointer != null && pointer.button != PointerEventData.InputButton.Left)
 			return;
