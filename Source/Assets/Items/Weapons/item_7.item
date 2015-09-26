@@ -4,5 +4,5 @@
   <FileNameImage>Weapons\item_7.png</FileNameImage>
   <Name>Красивый топор</Name>
   <Description>Старый, но до сих пор красивый одноручный топор.</Description>
-  <Type>3</Type>
+  <Type>5</Type>
 </Item>
