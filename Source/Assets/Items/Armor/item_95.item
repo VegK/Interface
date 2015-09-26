@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+  <Index>95</Index>
+  <FileNameImage>Armor\item_95.png</FileNameImage>
+  <Name>Заколдованная броня</Name>
+  <Description>Новёхонькая броня только от магов.</Description>
+  <Type>3</Type>
+</Item>

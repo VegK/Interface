@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+  <Index>21</Index>
+  <FileNameImage>Armor\item_21.png</FileNameImage>
+  <Name>Железный шлем</Name>
+  <Description>Отличная защиты головы.</Description>
+  <Type>1</Type>
+</Item>

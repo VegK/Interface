@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+  <Index>82</Index>
+  <FileNameImage>Armor\item_82.png</FileNameImage>
+  <Name>Обычная рубаха</Name>
+  <Description>Ничего особенного.</Description>
+  <Type>3</Type>
+</Item>

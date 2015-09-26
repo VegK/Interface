@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+  <Index>96</Index>
+  <FileNameImage>Armor\item_96.png</FileNameImage>
+  <Name>Розовое платьишко</Name>
+  <Description>Ярко-розовое платье для особых случаев.</Description>
+  <Type>3</Type>
+</Item>

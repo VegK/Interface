@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+  <Index>12</Index>
+  <FileNameImage>Armor\item_12.png</FileNameImage>
+  <Name>Котелок</Name>
+  <Description>Странная иноземная шляпа.</Description>
+  <Type>1</Type>
+</Item>

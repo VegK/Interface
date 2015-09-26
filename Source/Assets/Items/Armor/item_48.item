@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+  <Index>48</Index>
+  <FileNameImage>Armor\item_48.png</FileNameImage>
+  <Name>Пластинчатые перчатки</Name>
+  <Description>Лучшие перчатки.</Description>
+  <Type>2</Type>
+</Item>
