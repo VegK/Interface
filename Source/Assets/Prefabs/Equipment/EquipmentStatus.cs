@@ -94,7 +94,7 @@ namespace Equipment
 					}
 					else
 					{
-						// TODO: хеш не совпадают
+						LogController.Instance.AddString("<color=red>Ошибка экипировки</color>: файл экипировки повреждём - загрузка невозможна.");
 					}
 				}
 			}

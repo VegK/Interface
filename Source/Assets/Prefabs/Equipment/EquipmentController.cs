@@ -59,14 +59,16 @@ public class EquipmentController : MonoBehaviour
 			var cell = equips.Find(c => c.Index == info.IndexCell);
 			if (cell == null)
 			{
-				// TODO: ошибка cell
+				var str = "<color=red>Ошибка экипировки</color>: не удалось найти ячейку с индексом <b>{0}</b>.";
+				LogController.Instance.AddString(string.Format(str, info.IndexCell));
 				continue;
 			}
 
 			var baseItem = LibraryController.Instance.GetItem(info.IndexItem);
 			if (baseItem == null)
 			{
-				// TODO: ошибка item
+				var str = "<color=red>Ошибка экипировки</color>: не удалось найти предмет с индексом <b>{0}</b>.";
+				LogController.Instance.AddString(string.Format(str, info.IndexItem));
 				continue;
 			}
 

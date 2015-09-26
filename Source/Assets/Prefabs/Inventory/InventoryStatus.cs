@@ -90,7 +90,7 @@ namespace Inventory
 					}
 					else
 					{
-						// TODO: хеш не совпадают
+						LogController.Instance.AddString("<color=red>Ошибка инвентаря</color>: файл инвентаря повреждём - загрузка невозможна.");
 					}
 				}
 			}
