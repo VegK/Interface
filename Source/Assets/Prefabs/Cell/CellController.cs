@@ -8,10 +8,30 @@ public class CellController : MonoBehaviour
 	public int Index;
 	public CellType Type;
 
-	public ItemController Item { get; set; }
+	public ItemController Item
+	{
+		get
+		{
+			return _item;
+		}
+		set
+		{
+			var change = (_item != value);
+
+			_item = value;
+
+			if (change && OnChangeItem != null)
+				OnChangeItem(value);
+		}
+	}
+
+	/// <summary>
+	/// Событие вызываемое при смене предмета в ячейке.
+	/// </summary>
+	public event ChangeItemHandler OnChangeItem; 
 	#endregion
 	#region Private
-
+	private ItemController _item;
 	#endregion
 	#endregion
 
@@ -26,4 +46,6 @@ public class CellController : MonoBehaviour
 	}
 	#endregion
 	#endregion
+
+	public delegate void ChangeItemHandler(ItemController item);
 }
