@@ -1,6 +1,9 @@
 ﻿using Inventory;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using System.Xml.Serialization;
 using UnityEngine;
 
@@ -44,10 +47,15 @@ namespace Equipment
 
 			try
 			{
-				using (FileStream stream = new FileStream(file, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+				using (FileStream stream = new FileStream(file, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
 				using (TextWriter writer = new StreamWriter(stream))
 				{
 					ser.Serialize(writer, listItems);
+
+					var hash = stream.GetSHA1Hash();
+					PlayerPrefs.SetString("equipment", hash);
+					PlayerPrefs.Save();
+
 					writer.Close();
 				}
 			}
@@ -75,8 +83,19 @@ namespace Equipment
 				using (FileStream stream = new FileStream(file, FileMode.Open, FileAccess.Read))
 				{
 					var list = ser.Deserialize(stream) as EquipmentStatus;
-					if (list != null)
-						status = list;
+
+					var hashFile = stream.GetSHA1Hash();
+					var hashSave = PlayerPrefs.GetString("equipment");
+
+					if (!String.IsNullOrEmpty(hashSave) && hashFile == hashSave)
+					{
+						if (list != null)
+							status = list;
+					}
+					else
+					{
+						// TODO: хеш не совпадают
+					}
 				}
 			}
 			catch
