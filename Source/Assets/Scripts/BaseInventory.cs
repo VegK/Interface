@@ -56,14 +56,10 @@ public abstract class BaseInventory : MonoBehaviour
 		if (from == null || to == null)
 			return;
 
-		if (from.Item != null)
-			from.Item.transform.SetParent(to.transform, false);
-		if (to.Item != null)
-			to.Item.transform.SetParent(from.transform, false);
-
 		var tempItem = to.Item;
-		to.Item = from.Item;
-		from.Item = tempItem;
+
+		SetItemInCell(from.Item, to);
+		SetItemInCell(tempItem, from);
 	}
 	/// <summary>
 	/// Создать клона указанного предмета в указанной ячейки.
@@ -75,8 +71,15 @@ public abstract class BaseInventory : MonoBehaviour
 		var clone = Instantiate(item.gameObject);
 		var itemClone = clone.GetComponent<ItemController>();
 
-		itemClone.BaseItem = item.BaseItem;
-		SetItemInCell(itemClone, cell);
+		if (SetItemInCell(itemClone, cell))
+		{
+			itemClone.BaseItem = item.BaseItem;
+		}
+		else
+		{
+			Destroy(clone);
+			clone = null;
+		}
 
 		return clone;
 	}
@@ -95,7 +98,7 @@ public abstract class BaseInventory : MonoBehaviour
 	/// </summary>
 	/// <param name="name">Название ячейки.</param>
 	/// <returns>Класс созданной ячейки.</returns>
-	public virtual CellController CreateCell(string name)
+	public virtual CellController CreateCell(string name, CellType type)
 	{
 		var cell = Instantiate(Parameters.Instance.PrefabCell);
 		cell.name = name;
@@ -106,7 +109,7 @@ public abstract class BaseInventory : MonoBehaviour
 		if (Cells.Count > 0)
 			index = Cells.Max(c => c.Index) + 1;
 		cellCtrl.Index = index;
-        cellCtrl.Type = CellType.Standart;
+        cellCtrl.Type = type;
 		Cells.Add(cellCtrl);
 		return cellCtrl;
 	}
@@ -132,11 +135,17 @@ public abstract class BaseInventory : MonoBehaviour
 		itemCtrl.BaseItem = item;
 		return itemCtrl;
 	}
-
-	public static void SetItemInCell(ItemController item, CellController cell)
+	/// <summary>
+	/// Положить предмет в ячейку.
+	/// </summary>
+	/// <param name="item">Предмет.</param>
+	/// <param name="cell">Ячейка.</param>
+	public static bool SetItemInCell(ItemController item, CellController cell)
 	{
-		item.transform.SetParent(cell.transform, false);
+		if (item != null)
+			item.transform.SetParent(cell.transform, false);
 		cell.Item = item;
+		return true;
 	}
 	#endregion
 	#region Private
@@ -152,7 +161,7 @@ public abstract class BaseInventory : MonoBehaviour
 			return;
 
 		for (int i = 0; i < Size; i++)
-			CreateCell("Cell" + (i + 1));
+			CreateCell("Cell" + (i + 1), CellType.Standart);
 	}
 	#endregion
 	#endregion

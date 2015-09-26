@@ -102,12 +102,18 @@ public class LibraryController : BaseInventory
 			if (!File.Exists(path + itemLib.FileNameImage))
 				continue;
 
-			var cell = CreateCell("Cell" + i);
+			var cell = CreateCell("Cell" + i, CellType.Standart);
 			var item = CreateItem(itemLib);
-			item.ProduceClone = true;
 
-			SetItemInCell(item, cell);
-			i++;
+			if (SetItemInCell(item, cell))
+			{
+				item.ProduceClone = true;
+				i++;
+			}
+			else
+			{
+				Destroy(item.gameObject);
+			}
 		}
 	}
 	#endregion
