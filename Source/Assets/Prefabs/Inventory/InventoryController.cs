@@ -1,4 +1,8 @@
-﻿namespace Inventory
+﻿using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+
+namespace Inventory
 {
 	public class InventoryController : BaseInventory
 	{
@@ -6,7 +10,7 @@
 
 		#region Properties
 		#region Public
-
+		public CustomScrollRect ScrollRect;
 		#endregion
 		#region Private
 
@@ -15,7 +19,10 @@
 
 		#region Methods
 		#region Public
-
+		public void OnScrollValueChanged(Vector2 data)
+		{
+			Parameters.Instance.ToolTip.Hide();
+		}
 		#endregion
 		#region Private
 		protected override void Start()
@@ -23,7 +30,16 @@
 			base.Start();
 			LoadInventory();
         }
-
+		private void OnEnable()
+		{
+			ScrollRect.OnBeginScroll += BeginScroll;
+			ScrollRect.OnEndScroll += EndScroll;
+		}
+		private void OnDisable()
+		{
+			ScrollRect.OnBeginScroll -= BeginScroll;
+			ScrollRect.OnEndScroll -= EndScroll;
+		}
 		private void OnApplicationQuit()
 		{
 			var status = new InventoryStatus(Cells);
@@ -59,6 +75,15 @@
 				var item = CreateItem(baseItem);
 				SetItemInCell(item, cell);
 			}
+		}
+		private void BeginScroll(object sender, PointerEventData eventData)
+		{
+			Parameters.Instance.ToolTip.Hide();
+			Parameters.Instance.ToolTip.FixedHide = true;
+		}
+		private void EndScroll(object sender, PointerEventData eventData)
+		{
+			Parameters.Instance.ToolTip.FixedHide = false;
 		}
 		#endregion
 		#endregion

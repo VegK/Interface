@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class LibraryController : BaseInventory
 {
@@ -21,6 +23,8 @@ public class LibraryController : BaseInventory
 			return _instance;
 		}
 	}
+
+	public CustomScrollRect ScrollRect;
 	#endregion
 	#region Private
 	private static LibraryController _instance;
@@ -39,6 +43,10 @@ public class LibraryController : BaseInventory
 	{
 		return _items.Find(i => i.Index == index);
 	}
+	public void OnScrollValueChanged(Vector2 data)
+	{
+		Parameters.Instance.ToolTip.Hide();
+	}
 	#endregion
 	#region Private
 	private void Awake()
@@ -47,14 +55,22 @@ public class LibraryController : BaseInventory
 		_items = new List<Item>();
 		LoadItemsFromFiles();
 	}
-
 	protected override void Start()
 	{
 		base.Start();
 		FillLibrary();
 		SetHeightContent(_items.Count);
 	}
-
+	private void OnEnable()
+	{
+		ScrollRect.OnBeginScroll += BeginScroll;
+		ScrollRect.OnEndScroll += EndScroll;
+	}
+	private void OnDisable()
+	{
+		ScrollRect.OnBeginScroll -= BeginScroll;
+		ScrollRect.OnEndScroll -= EndScroll;
+	}
 	/// <summary>
 	/// Загрузить информацию о предметах из файлов.
 	/// </summary>
@@ -83,7 +99,6 @@ public class LibraryController : BaseInventory
 		}
 		catch { }
 	}
-
 	/// <summary>
 	/// Заполнить ячейки библиотеки предметами.
 	/// </summary>
@@ -115,6 +130,15 @@ public class LibraryController : BaseInventory
 				Destroy(item.gameObject);
 			}
 		}
+	}
+	private void BeginScroll(object sender, PointerEventData eventData)
+	{
+		Parameters.Instance.ToolTip.Hide();
+		Parameters.Instance.ToolTip.FixedHide = true;
+	}
+	private void EndScroll(object sender, PointerEventData eventData)
+	{
+		Parameters.Instance.ToolTip.FixedHide = false;
 	}
 	#endregion
 	#endregion
