@@ -4,5 +4,5 @@
   <FileNameImage>Armor\item_9.png</FileNameImage>
   <Name>Бронзовый щит</Name>
   <Description>Обычный бронзовый щит.</Description>
-  <Type>2</Type>
+  <Type>7</Type>
 </Item>

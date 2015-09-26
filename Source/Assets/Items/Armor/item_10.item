@@ -4,5 +4,5 @@
   <FileNameImage>Armor\item_10.png</FileNameImage>
   <Name>Старый железный щит</Name>
   <Description>Посредственно выполненный железный щит.</Description>
-  <Type>2</Type>
+  <Type>7</Type>
 </Item>

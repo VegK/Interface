@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+  <Index>22</Index>
+  <FileNameImage>Armor\item_22.png</FileNameImage>
+  <Name>Магичешкая шляпа</Name>
+  <Description>С виду обычная шляпа.</Description>
+  <Type>1</Type>
+</Item>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+  <Index>46</Index>
+  <FileNameImage>Armor\item_46.png</FileNameImage>
+  <Name>Железные ботинки</Name>
+  <Description>Отлично защищают ноги.</Description>
+  <Type>6</Type>
+</Item>

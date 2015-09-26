@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Item>
+  <Index>83</Index>
+  <FileNameImage>Armor\item_83.png</FileNameImage>
+  <Name>Бронзовая броня</Name>
+  <Description>Бронза - не лучший материал для брони.</Description>
+  <Type>3</Type>
+</Item>
