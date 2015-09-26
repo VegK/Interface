@@ -1,41 +1,47 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
-public class EquipmentCellController : MonoBehaviour
+public class EquipmentCellController : CellController
 {
 	#region Properties
 	#region Public
+	public ItemType TypeItem;
 	public GameObject BackgroundImage;
 	#endregion
 	#region Private
-	private CellController _cellController;
+
 	#endregion
 	#endregion
 
 	#region Methods
 	#region Public
-
+	/// <summary>
+	/// Положить предмет в ячейку с определением соответствия типа ячейки и предмета.
+	/// </summary>
+	/// <param name="item">Предмет.</param>
+	/// <returns>В случаи удачного действия возвращает true.</returns>
+	public override bool SetItem(ItemController item)
+	{
+		if (item != null)
+		{
+			if (item.BaseItem == null)
+				throw new NullReferenceException("Отсутствует ссылка на базовый предмет.");
+			if (item.BaseItem.GetItemType() != TypeItem)
+				return false;
+		}
+		return base.SetItem(item);
+	}
 	#endregion
 	#region Private
-	private void Start()
-	{
-		_cellController = GetComponent<CellController>();
-		if (_cellController == null)
-			Debug.Log(string.Format("У ячейке \"{0}\" отсутствует компонент \"{1}\".", gameObject.name, typeof(CellController)));
-		else
-			_cellController.OnChangeItem += ChangeItem;
-    }
-
 	private void OnEnable()
 	{
-		if (_cellController != null)
-			_cellController.OnChangeItem += ChangeItem;
+		OnChangeItem += ChangeItem;
 	}
 
 	private void OnDisable()
 	{
-		if (_cellController != null)
-			_cellController.OnChangeItem -= ChangeItem;
+		OnChangeItem -= ChangeItem;
 	}
 
 	private void ChangeItem(ItemController item)

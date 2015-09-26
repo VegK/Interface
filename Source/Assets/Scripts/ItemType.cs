@@ -22,7 +22,7 @@ public enum ItemType
 	/// <summary>
 	/// Оружие.
 	/// </summary>
-	Weapons = 5,
+	Weapon = 5,
 	/// <summary>
 	/// Ботинки.
 	/// </summary>

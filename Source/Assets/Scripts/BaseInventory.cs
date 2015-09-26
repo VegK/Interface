@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 public abstract class BaseInventory : MonoBehaviour
 {
@@ -57,9 +58,9 @@ public abstract class BaseInventory : MonoBehaviour
 			return;
 
 		var tempItem = to.Item;
-
-		SetItemInCell(from.Item, to);
-		SetItemInCell(tempItem, from);
+		var swap = SetItemInCell(from.Item, to);
+		if (swap)
+			SetItemInCell(tempItem, from);
 	}
 	/// <summary>
 	/// Создать клона указанного предмета в указанной ячейки.
@@ -70,12 +71,9 @@ public abstract class BaseInventory : MonoBehaviour
 	{
 		var clone = Instantiate(item.gameObject);
 		var itemClone = clone.GetComponent<ItemController>();
+		itemClone.BaseItem = item.BaseItem;
 
-		if (SetItemInCell(itemClone, cell))
-		{
-			itemClone.BaseItem = item.BaseItem;
-		}
-		else
+		if (!SetItemInCell(itemClone, cell))
 		{
 			Destroy(clone);
 			clone = null;
@@ -142,10 +140,9 @@ public abstract class BaseInventory : MonoBehaviour
 	/// <param name="cell">Ячейка.</param>
 	public static bool SetItemInCell(ItemController item, CellController cell)
 	{
-		if (item != null)
-			item.transform.SetParent(cell.transform, false);
-		cell.Item = item;
-		return true;
+		if (cell == null)
+			throw new NullReferenceException("Ячейка не может быть NULL.");
+		return cell.SetItem(item);
 	}
 	#endregion
 	#region Private
