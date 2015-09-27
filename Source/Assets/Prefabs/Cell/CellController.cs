@@ -7,6 +7,7 @@ public class CellController : MonoBehaviour
 	#region Public
 	public int Index;
 	public CellType Type;
+	public GameObject SelectedCell;
 
 	public ItemController Item
 	{
@@ -42,29 +43,44 @@ public class CellController : MonoBehaviour
 	/// </summary>
 	/// <param name="item">Предмет.</param>
 	/// <returns>Можно положить.</returns>
-	public virtual bool CheckSetItem(ItemController item)
+	public virtual bool CheckPutItem(ItemController item)
 	{
-		return true;
+		var res = true;
+		if (Item != null)
+			res = !Item.FixedCell;
+		return res;
 	}
 	/// <summary>
 	/// Положить предмет в ячейку.
 	/// </summary>
 	/// <param name="item">Предмет.</param>
 	/// <returns>В случаи удачного действия возвращает true.</returns>
-	public virtual bool SetItem(ItemController item)
+	public virtual bool PutItem(ItemController item)
 	{
-		if (!CheckSetItem(item))
+		if (!CheckPutItem(item))
 			return false;
 		if (item != null)
 			item.transform.SetParent(transform, false);
 		this.Item = item;
 		return true;
 	}
+	/// <summary>
+	/// Показать/скрыть выделение ячейки.
+	/// </summary>
+	/// <param name="value">Показать/скрыть.</param>
+	public void SetSelected(bool value)
+	{
+		if (SelectedCell == null)
+			return;
+		SelectedCell.SetActive(value);
+	}
 	#endregion
 	#region Private
-	protected virtual void Start()
+	protected virtual void Awake()
 	{
-
+		if (SelectedCell == null)
+			return;
+		SelectedCell.SetActive(false);
 	}
 	#endregion
 	#endregion

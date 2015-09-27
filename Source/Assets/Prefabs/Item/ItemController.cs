@@ -51,6 +51,7 @@ public class ItemController : MonoBehaviour
 	private bool _fixedCell;
 	private bool _produceClone;
 	private Vector2 _size;
+	private CellController _prevSelectedCell;
 	#endregion
 	#endregion
 
@@ -67,7 +68,7 @@ public class ItemController : MonoBehaviour
 	public void OnPointerExit(BaseEventData data)
 	{
 		Parameters.Instance.ToolTip.Hide(1);
-    }
+	}
 	public void OnPointerDown(BaseEventData data)
 	{
 		var pointer = data as PointerEventData;
@@ -75,6 +76,7 @@ public class ItemController : MonoBehaviour
 			return;
 		if (FixedCell && !ProduceClone)
 			return;
+
 		Parameters.Instance.ToolTip.Hide();
 		Parameters.Instance.ToolTip.FixedHide = true;
 
@@ -84,12 +86,26 @@ public class ItemController : MonoBehaviour
 
 		ImageItem.gameObject.SetActive(ProduceClone);
 
+		// Выделяем доступные ячейки инвентаря.
 		EquipmentController.Instance.ResetAvailableCells();
 		EquipmentController.Instance.EnableAvailableCells(BaseItem.GetItemType(), ProduceClone, this);
-    }
+
+		// Показываем задний фон ячейки инвентаря.
+		var inputModule = EventSystem.current.currentInputModule as CustomStandaloneInputModule;
+		CellController enter, press;
+		if (inputModule != null)
+		{
+			inputModule.GetDropData(out enter, out press);
+			var cell = press as Equipment.EquipmentCellController;
+			if (cell != null)
+				cell.SetBackground(true);
+        }
+	}
 	public void OnPointerUp(BaseEventData data)
 	{
 		EquipmentController.Instance.ResetAvailableCells();
+		if (_prevSelectedCell != null)
+			_prevSelectedCell.SetSelected(false);
 
 		var pointer = data as PointerEventData;
 		if (pointer != null && pointer.button != PointerEventData.InputButton.Left)
@@ -103,19 +119,21 @@ public class ItemController : MonoBehaviour
 
 		var inputModule = EventSystem.current.currentInputModule as CustomStandaloneInputModule;
 		CellController enter, press;
-
 		if (inputModule != null)
 		{
 			inputModule.GetDropData(out enter, out press);
 			if (enter != null && press != null)
+			{
+				enter.SetSelected(false);
+				press.SetSelected(false);
 				if (enter.Item == null || !enter.Item.FixedCell)
-				{
 					if (enter.Type == CellType.Recycle)
 					{
 						if (!press.Item.FixedCell)
 							BaseInventory.RecycleItem(press);
-                    }
+					}
 					else
+					{
 						// Если предмет может создавать свои копии, то создаём
 						// в противном случаи меняем местами предметы.
 						if (ProduceClone)
@@ -125,7 +143,8 @@ public class ItemController : MonoBehaviour
 						}
 						else
 							BaseInventory.SwapItemsInCell(press, enter);
-				}
+					}
+			}
 		}
 
 		Destroy(_cloneMove);
@@ -138,7 +157,39 @@ public class ItemController : MonoBehaviour
 
 		var pointer = data as PointerEventData;
 		if (pointer != null && pointer.button == PointerEventData.InputButton.Left)
+		{
 			_cloneMove.transform.position = pointer.position;
+
+
+			// Выделяем ячейку если предмет можно переместить.
+			var inputModule = EventSystem.current.currentInputModule as CustomStandaloneInputModule;
+			CellController enter, press;
+			if (inputModule != null)
+			{
+				inputModule.GetDropData(out enter, out press);
+
+				if (enter == null && _prevSelectedCell != null)
+					_prevSelectedCell.SetSelected(false);
+				if (enter != null)
+				{
+					var selected = enter.CheckPutItem(press.Item);
+					if (ProduceClone)
+						selected &= (enter.Item == null);
+					else
+					{
+						if (press != null)
+							selected &= press.CheckPutItem(enter.Item);
+					}
+					enter.SetSelected(selected);
+					if (enter != _prevSelectedCell)
+					{
+						if (_prevSelectedCell != null)
+							_prevSelectedCell.SetSelected(false);
+						_prevSelectedCell = enter;
+					}
+				}
+			}
+		}
 	}
 	#endregion
 	#region Private

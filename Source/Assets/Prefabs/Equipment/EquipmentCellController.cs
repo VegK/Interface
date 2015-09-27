@@ -25,6 +25,8 @@ namespace Equipment
 		/// <param name="value">Показать/скрыть.</param>
 		public void SetAvailable(bool value)
 		{
+			if (AvailableImage == null)
+				return;
 			AvailableImage.SetActive(value);
         }
 		/// <summary>
@@ -33,6 +35,8 @@ namespace Equipment
 		/// <param name="value">Показать/скрыть.</param>
 		public void SetBackground(bool value)
 		{
+			if (BackgroundImage == null)
+				return;
 			BackgroundImage.SetActive(value);
 		}
 		/// <summary>
@@ -40,7 +44,7 @@ namespace Equipment
 		/// </summary>
 		/// <param name="item">Предмет.</param>
 		/// <returns>Можно положить.</returns>
-		public override bool CheckSetItem(ItemController item)
+		public override bool CheckPutItem(ItemController item)
 		{
 			if (item != null)
 			{
@@ -49,23 +53,26 @@ namespace Equipment
 				if (item.BaseItem.GetItemType() != TypeItem)
 					return false;
 			}
-			return base.CheckSetItem(item);
+			return base.CheckPutItem(item);
 		}
 		/// <summary>
 		/// Положить предмет в ячейку с определением соответствия типа ячейки и предмета.
 		/// </summary>
 		/// <param name="item">Предмет.</param>
 		/// <returns>В случаи удачного действия возвращает true.</returns>
-		public override bool SetItem(ItemController item)
+		public override bool PutItem(ItemController item)
 		{
-			if (!CheckSetItem(item))
+			if (!CheckPutItem(item))
 				return false;
-            return base.SetItem(item);
+            return base.PutItem(item);
 		}
 		#endregion
 		#region Private
-		private void Awake()
+		protected override void Awake()
 		{
+			base.Awake();
+			if (AvailableImage == null)
+				return;
 			AvailableImage.SetActive(false);
         }
 

@@ -32,7 +32,7 @@ public class EquipmentController : MonoBehaviour
 	#region Methods
 	#region Public
 	/// <summary>
-	/// Сбросить выделение всех ячеек экипировки.
+	/// Сбросить доступность всех ячеек экипировки.
 	/// </summary>
 	public void ResetAvailableCells()
 	{
@@ -43,7 +43,7 @@ public class EquipmentController : MonoBehaviour
 		}
 	}
 	/// <summary>
-	/// Выделить ячейки экипировки определённого типа.
+	/// Включить доступность ячейки экипировки определённого типа.
 	/// </summary>
 	/// <param name="typeItem">Тип предмета.</param>
 	/// <param name="nullCell">Выделять только пустые ячейки.</param>
@@ -56,10 +56,7 @@ public class EquipmentController : MonoBehaviour
 			if (nullCell)
 				available &= (cell.Item == null);
 			if (item != null && item == cell.Item)
-			{
-				cell.SetBackground(true);
 				available = false;
-			}
 
             cell.SetAvailable(available);
 		}
@@ -115,7 +112,7 @@ public class EquipmentController : MonoBehaviour
 			}
 
 			var item = LibraryController.Instance.CreateItem(baseItem);
-			cell.SetItem(item);
+			cell.PutItem(item);
 		}
 	}
 	#endregion

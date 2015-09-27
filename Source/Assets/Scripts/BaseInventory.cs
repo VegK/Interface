@@ -57,7 +57,8 @@ public abstract class BaseInventory : MonoBehaviour
 		if (from == null || to == null)
 			return;
 
-		if (!from.CheckSetItem(to.Item))
+		// Проверяем возможно ли перемещение предмета из ячейке назначения в ячейку "от куда".
+		if (!from.CheckPutItem(to.Item))
 			return;
 
 		var tempItem = to.Item;
@@ -145,7 +146,7 @@ public abstract class BaseInventory : MonoBehaviour
 	{
 		if (cell == null)
 			throw new NullReferenceException("Ячейка не может быть NULL.");
-		return cell.SetItem(item);
+		return cell.PutItem(item);
 	}
 	#endregion
 	#region Private
