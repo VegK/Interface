@@ -93,7 +93,7 @@ public class EquipmentController : MonoBehaviour
 		if (!EquipmentStatus.Load(out status))
 			return;
 
-		foreach (EquipmenCellInfo info in status.Cells)
+		foreach (EquipmentCellInfo info in status.Cells)
 		{
 			var cell = _cells.Find(c => c.Index == info.IndexCell);
 			if (cell == null)

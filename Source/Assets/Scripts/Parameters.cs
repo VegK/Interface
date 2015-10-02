@@ -8,10 +8,13 @@ public class Parameters : MonoBehaviour
 
 	#region Properties
 	#region Public
-	public GameObject PrefabCell;
-	public GameObject PrefabItem;
+	[Header("Prefabs")]
+	public CellController PrefabCell;
+	public ItemController PrefabItem;
 
+	[Header("Static objects")]
 	public ToolTipController ToolTip;
+	public Canvas MainCanvas;
 
 	public static Parameters Instance
 	{
@@ -38,14 +41,6 @@ public class Parameters : MonoBehaviour
 	private void Awake()
 	{
 		_instance = this;
-
-		var ctrlCell = PrefabCell.GetComponent<CellController>();
-		if (ctrlCell == null)
-			throw new Exception(string.Format("Отсутствует компонент \"{0}\" у префаба клетки.", typeof(CellController)));
-
-		var ctrlItem = PrefabItem.GetComponent<ItemController>();
-		if (ctrlItem == null)
-			throw new Exception(string.Format("Отсутствует компонент \"{0}\" у префаба предмета.", typeof(ItemController)));
 
 		ToolTip.gameObject.SetActive(false);
     }

@@ -13,7 +13,7 @@ namespace Equipment
 	{
 		#region Properties
 		#region Public
-		public List<EquipmenCellInfo> Cells;
+		public List<EquipmentCellInfo> Cells;
 		#endregion
 		#region Private
 		private List<EquipmentCellController> _cells;
@@ -22,7 +22,7 @@ namespace Equipment
 
 		private EquipmentStatus()
 		{
-			Cells = new List<EquipmenCellInfo>();
+			Cells = new List<EquipmentCellInfo>();
 		}
 		public EquipmentStatus(List<EquipmentCellController> cells)
 		{
@@ -40,7 +40,7 @@ namespace Equipment
 			var listItems = new EquipmentStatus();
 			foreach (EquipmentCellController cell in _cells)
 				if (cell.Item != null)
-					listItems.Cells.Add(EquipmenCellInfo.ToCellInfo(cell));
+					listItems.Cells.Add(EquipmentCellInfo.ToCellInfo(cell));
 
 			var file = Application.dataPath + "\\" + EquipmentController.FILENAME_SAVE;
 			var ser = new XmlSerializer(typeof(EquipmentStatus));

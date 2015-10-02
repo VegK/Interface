@@ -81,7 +81,7 @@ public class ItemController : MonoBehaviour
 		Parameters.Instance.ToolTip.FixedHide = true;
 
 		_cloneMove = Instantiate(ImageItem.gameObject);
-		_cloneMove.transform.SetParent(GetComponentInParent<Canvas>().transform);
+		_cloneMove.transform.SetParent(Parameters.Instance.MainCanvas.transform);
 		_cloneMove.transform.position = transform.position;
 
 		ImageItem.gameObject.SetActive(ProduceClone);

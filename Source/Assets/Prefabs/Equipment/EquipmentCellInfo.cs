@@ -1,6 +1,6 @@
 ﻿namespace Equipment
 {
-	public class EquipmenCellInfo
+	public class EquipmentCellInfo
 	{
 		#region Properties
 		#region Public
@@ -12,7 +12,7 @@
 		#endregion
 		#endregion
 
-		private EquipmenCellInfo() { }
+		private EquipmentCellInfo() { }
 
 		#region Methods
 		#region Public
@@ -20,9 +20,9 @@
 		/// Получить EquipmenCellInfo на основе EquipmentCellController.
 		/// </summary>
 		/// <param name="cell">Ячейка экипировки.</param>
-		public static EquipmenCellInfo ToCellInfo(EquipmentCellController cell)
+		public static EquipmentCellInfo ToCellInfo(EquipmentCellController cell)
 		{
-			var res = new EquipmenCellInfo();
+			var res = new EquipmentCellInfo();
 			res.IndexCell = cell.Index;
 			if (cell.Item != null)
 			{

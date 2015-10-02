@@ -9,7 +9,7 @@ public abstract class BaseInventory : MonoBehaviour
 {
 	#region Properties
 	#region Public
-	public GameObject Content;
+	public RectTransform Content;
 
 	public int Size;
 	#endregion
@@ -34,16 +34,16 @@ public abstract class BaseInventory : MonoBehaviour
 	public void SetHeightContent(int size)
 	{
 		var cellSize = Parameters.Instance.PrefabCell.GetComponent<RectTransform>().sizeDelta;
-		var contentSize = Content.GetComponent<RectTransform>().sizeDelta;
+		var contentSize = Content.sizeDelta;
 		var columns = Mathf.Floor(contentSize.x / cellSize.x);
 		var lines = Mathf.Ceil(size / columns);
 		var newHeight = cellSize.y * lines;
 
 		// Меняем параметры подложки.
-		if (Content.GetComponent<RectTransform>().sizeDelta.y < newHeight)
+		if (Content.sizeDelta.y < newHeight)
 		{
 			contentSize.y = newHeight;
-			Content.GetComponent<RectTransform>().sizeDelta = contentSize;
+			Content.sizeDelta = contentSize;
 		}
 		var pos = Content.transform.localPosition;
 		pos.y = -contentSize.y / 2;
@@ -71,15 +71,14 @@ public abstract class BaseInventory : MonoBehaviour
 	/// </summary>
 	/// <param name="cell">Ячейка в которой будет создан клон.</param>
 	/// <param name="item">Предмет для клонирования.</param>
-	public static GameObject CreateCloneItem(CellController cell, ItemController item)
+	public static ItemController CreateCloneItem(CellController cell, ItemController item)
 	{
-		var clone = Instantiate(item.gameObject);
-		var itemClone = clone.GetComponent<ItemController>();
-		itemClone.BaseItem = item.BaseItem;
+		var clone = Instantiate(item);
+		clone.BaseItem = item.BaseItem;
 
-		if (!SetItemInCell(itemClone, cell))
+		if (!SetItemInCell(clone, cell))
 		{
-			Destroy(clone);
+			Destroy(clone.gameObject);
 			clone = null;
 		}
 
@@ -106,36 +105,35 @@ public abstract class BaseInventory : MonoBehaviour
 		cell.name = name;
 		cell.transform.SetParent(Content.transform);
 
-		var cellCtrl = cell.GetComponent<CellController>();
 		var index = 1;
 		if (Cells.Count > 0)
 			index = Cells.Max(c => c.Index) + 1;
-		cellCtrl.Index = index;
-        cellCtrl.Type = type;
-		Cells.Add(cellCtrl);
-		return cellCtrl;
+		cell.Index = index;
+		cell.Type = type;
+		Cells.Add(cell);
+		return cell;
 	}
 	/// <summary>
 	/// Создать объект предмета на основании класса предмета.
 	/// </summary>
-	/// <param name="item">Класс предмета.</param>
+	/// <param name="baseItem">Базовый предмет.</param>
 	/// <returns>Класс созданного предмета.</returns>
-	public virtual ItemController CreateItem(Item item)
+	public virtual ItemController CreateItem(Item baseItem)
 	{
 		var path = Application.dataPath + "\\" + Parameters.ITEMS_PATH + "\\";
 
-		var obj = Instantiate(Parameters.Instance.PrefabItem);
-		obj.name = item.Name;
-		obj.transform.position = Vector2.zero;
+		var item = Instantiate(Parameters.Instance.PrefabItem);
+		item.name = baseItem.Name;
+		item.transform.position = Vector2.zero;
 
-		var bytes = File.ReadAllBytes(path + item.FileNameImage);
+		var bytes = File.ReadAllBytes(path + baseItem.FileNameImage);
 		var tex2d = new Texture2D(1, 1);
 		tex2d.LoadImage(bytes);
 
-		var itemCtrl = obj.GetComponent<ItemController>();
-		itemCtrl.ImageItem.sprite = Sprite.Create(tex2d, new Rect(0, 0, tex2d.width, tex2d.height), Vector2.zero);
-		itemCtrl.BaseItem = item;
-		return itemCtrl;
+		var rect = new Rect(0, 0, tex2d.width, tex2d.height);
+        item.ImageItem.sprite = Sprite.Create(tex2d, rect, Vector2.zero);
+		item.BaseItem = baseItem;
+		return item;
 	}
 	/// <summary>
 	/// Положить предмет в ячейку.
