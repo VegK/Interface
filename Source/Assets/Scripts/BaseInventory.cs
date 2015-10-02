@@ -39,15 +39,16 @@ public abstract class BaseInventory : MonoBehaviour
 		var lines = Mathf.Ceil(size / columns);
 		var newHeight = cellSize.y * lines;
 
-		// Меняем параметры подложки.
-		if (Content.sizeDelta.y < newHeight)
+		// Если новая высота контанта больше текущей, то меняем параметры подложки.
+		if (newHeight > Content.sizeDelta.y)
 		{
 			contentSize.y = newHeight;
 			Content.sizeDelta = contentSize;
+
+			var pos = Content.transform.localPosition;
+			pos.y = -contentSize.y / 2;
+			Content.transform.localPosition = pos;
 		}
-		var pos = Content.transform.localPosition;
-		pos.y = -contentSize.y / 2;
-		Content.transform.localPosition = pos;
 	}
 	/// <summary>
 	/// Поменять местами предметы в ячейках.
@@ -73,15 +74,13 @@ public abstract class BaseInventory : MonoBehaviour
 	/// <param name="item">Предмет для клонирования.</param>
 	public static ItemController CreateCloneItem(CellController cell, ItemController item)
 	{
-		var clone = Instantiate(item);
-		clone.BaseItem = item.BaseItem;
-
-		if (!SetItemInCell(clone, cell))
+		ItemController clone = null;
+		if (cell.CheckPutItem(item))
 		{
-			Destroy(clone.gameObject);
-			clone = null;
+			clone = Instantiate(item);
+			clone.BaseItem = item.BaseItem;
+			cell.PutItem(clone);
 		}
-
 		return clone;
 	}
 	/// <summary>
@@ -154,6 +153,9 @@ public abstract class BaseInventory : MonoBehaviour
         CreatingCells();
 		SetHeightContent();
 	}
+	/// <summary>
+	/// Создать ячейки инвентаря.
+	/// </summary>
 	private void CreatingCells()
 	{
 		if (Size == 0)
