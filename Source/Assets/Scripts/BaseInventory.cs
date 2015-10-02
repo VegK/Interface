@@ -90,8 +90,36 @@ public abstract class BaseInventory : MonoBehaviour
 	public static void RecycleItem(CellController cell)
 	{
 		if (cell.Item != null)
+		{
 			Destroy(cell.Item.gameObject);
+			LogController.Instance.AddString(String.Format("Предмет \"{0}\" удалён.", cell.Item.name));
+		}
 		cell.Item = null;
+	}
+	/// <summary>
+	/// Попытаться модифицировать предмет на 1.
+	/// </summary>
+	/// <param name="item">Предмет для модификации.</param>
+	/// <returns>Результат модификации.</returns>
+	public static bool ModificationItem(ItemController item)
+	{
+		var str = string.Empty;
+		var res = false;
+
+		var rnd = UnityEngine.Random.Range(0, 2);
+		if (rnd == 0)
+		{
+			item.Modification++;
+			res = true;
+
+			str = "<color=green>Успешная</color> модификация предмета \"{0}\".";
+		}
+		else
+			str = "<color=red>Не удалось</color> модифицировать предмет \"{0}\".";
+
+		LogController.Instance.AddString(String.Format(str, item.name));
+
+		return res;
 	}
 	/// <summary>
 	/// Создать объект ячейки инвентаря.

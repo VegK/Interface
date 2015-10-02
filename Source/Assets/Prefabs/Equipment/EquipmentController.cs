@@ -113,6 +113,7 @@ public class EquipmentController : MonoBehaviour
 
 			var item = LibraryController.Instance.CreateItem(baseItem);
 			cell.PutItem(item);
+			info.MoveMoreParams(cell);
 		}
 	}
 	#endregion

@@ -10,5 +10,9 @@ public enum CellType
 	/// <summary>
 	/// Переработка.
 	/// </summary>
-	Recycle = 1
+	Recycle = 1,
+	/// <summary>
+	/// Модификация.
+	/// </summary>
+	Modification = 2
 }

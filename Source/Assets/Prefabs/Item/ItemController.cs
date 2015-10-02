@@ -45,6 +45,10 @@ public class ItemController : MonoBehaviour
 			_produceClone = value;
         }
 	}
+	/// <summary>
+	/// Уровень модификации предмета.
+	/// </summary>
+	public int Modification { get; set; }
 	#endregion
 	#region Private
 	private GameObject _cloneMove;
@@ -62,7 +66,12 @@ public class ItemController : MonoBehaviour
 		if (BaseItem != null)
 		{
 			var pos = transform.position;
-			Parameters.Instance.ToolTip.Show(pos, _size, BaseItem.Name, BaseItem.Description);
+
+			var itemName = BaseItem.Name;
+			if (Modification > 0)
+				itemName = "<color=red>+" + Modification + "</color> " + itemName;
+
+			Parameters.Instance.ToolTip.Show(pos, _size, itemName, BaseItem.Description);
 		}
 	}
 	public void OnPointerExit(BaseEventData data)
@@ -127,23 +136,29 @@ public class ItemController : MonoBehaviour
 				enter.SetSelected(false);
 				press.SetSelected(false);
 				if (enter.Item == null || !enter.Item.FixedCell)
-					if (enter.Type == CellType.Recycle)
+				{
+					switch (enter.Type)
 					{
-						if (!press.Item.FixedCell)
-							BaseInventory.RecycleItem(press);
+						case CellType.Recycle:
+							if (!press.Item.FixedCell)
+								BaseInventory.RecycleItem(press);
+							break;
+						case CellType.Modification:
+							BaseInventory.ModificationItem(this);
+							break;
+						default:
+							// Если предмет может создавать свои копии, то создаём
+							// в противном случаи меняем местами предметы.
+							if (ProduceClone)
+							{
+								if (enter.Item == null)
+									BaseInventory.CreateCloneItem(enter, press.Item);
+							}
+							else
+								BaseInventory.SwapItemsInCell(press, enter);
+							break;
 					}
-					else
-					{
-						// Если предмет может создавать свои копии, то создаём
-						// в противном случаи меняем местами предметы.
-						if (ProduceClone)
-						{
-							if (enter.Item == null)
-								BaseInventory.CreateCloneItem(enter, press.Item);
-						}
-						else
-							BaseInventory.SwapItemsInCell(press, enter);
-					}
+				}
 			}
 		}
 

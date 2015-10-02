@@ -6,6 +6,7 @@
 		#region Public
 		public int IndexCell { get; set; }
 		public int IndexItem { get; set; }
+		public int Modification { get; set; }
 		#endregion
 		#region Private
 
@@ -24,15 +25,24 @@
 		{
 			var res = new EquipmentCellInfo();
 			res.IndexCell = cell.Index;
-			if (cell.Item != null)
+
+			var item = cell.Item;
+            if (item != null)
 			{
-				res.IndexItem = cell.Item.BaseItem.Index;
+				res.IndexItem = item.BaseItem.Index;
+				res.Modification = item.Modification;
 			}
-			else
-			{
-				res.IndexItem = 0;
-			}
+
 			return res;
+		}
+		/// <summary>
+		/// Перенести дополнительные параметры ячейки и предмета в ячейке.
+		/// </summary>
+		/// <param name="cell">Ячейка.</param>
+		public void MoveMoreParams(CellController cell)
+		{
+			if (cell.Item != null)
+				cell.Item.Modification = Modification;
 		}
 		#endregion
 		#region Private
