@@ -19,10 +19,7 @@ namespace Inventory
 
 		#region Methods
 		#region Public
-		public void OnScrollValueChanged(Vector2 data)
-		{
-			Parameters.Instance.ToolTip.Hide();
-		}
+
 		#endregion
 		#region Private
 		protected override void Start()
@@ -34,11 +31,25 @@ namespace Inventory
 		{
 			ScrollRect.OnBeginScroll += BeginScroll;
 			ScrollRect.OnEndScroll += EndScroll;
+
+			var scrollbar = ScrollRect.GetVerticalScrollbar() as CustomScrollbar;
+			if (scrollbar != null)
+			{
+				scrollbar.OnBeginScroll += BeginScroll;
+				scrollbar.OnEndScroll += EndScroll;
+			}
 		}
 		private void OnDisable()
 		{
 			ScrollRect.OnBeginScroll -= BeginScroll;
 			ScrollRect.OnEndScroll -= EndScroll;
+
+			var scrollbar = ScrollRect.GetVerticalScrollbar() as CustomScrollbar;
+			if (scrollbar != null)
+			{
+				scrollbar.OnBeginScroll -= BeginScroll;
+				scrollbar.OnEndScroll -= EndScroll;
+			}
 		}
 		private void OnApplicationQuit()
 		{

@@ -43,10 +43,6 @@ public class LibraryController : BaseInventory
 	{
 		return _items.Find(i => i.Index == index);
 	}
-	public void OnScrollValueChanged(Vector2 data)
-	{
-		Parameters.Instance.ToolTip.Hide();
-	}
 	#endregion
 	#region Private
 	private void Awake()
@@ -65,11 +61,25 @@ public class LibraryController : BaseInventory
 	{
 		ScrollRect.OnBeginScroll += BeginScroll;
 		ScrollRect.OnEndScroll += EndScroll;
+
+		var scrollbar = ScrollRect.GetVerticalScrollbar() as CustomScrollbar;
+		if (scrollbar != null)
+		{
+			scrollbar.OnBeginScroll += BeginScroll;
+			scrollbar.OnEndScroll += EndScroll;
+		}
 	}
 	private void OnDisable()
 	{
 		ScrollRect.OnBeginScroll -= BeginScroll;
 		ScrollRect.OnEndScroll -= EndScroll;
+
+		var scrollbar = ScrollRect.GetVerticalScrollbar() as CustomScrollbar;
+		if (scrollbar != null)
+		{
+			scrollbar.OnBeginScroll -= BeginScroll;
+			scrollbar.OnEndScroll -= EndScroll;
+		}
 	}
 	/// <summary>
 	/// Загрузить информацию о предметах из файлов.

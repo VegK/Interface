@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using UnityEngine.EventSystems;
 
 namespace UnityEngine.UI
 {
-	public class CustomScrollRect : ScrollRect
+	public class CustomScrollbar : Scrollbar, IEndDragHandler
 	{
 		public event ScrollPointerHandler OnBeginScroll;
 		public event ScrollPointerHandler OnEndScroll;
@@ -15,16 +18,10 @@ namespace UnityEngine.UI
 				OnBeginScroll(this, eventData);
 		}
 
-		public override void OnEndDrag(PointerEventData eventData)
+		public virtual void OnEndDrag(PointerEventData eventData)
 		{
-			base.OnEndDrag(eventData);
 			if (OnEndScroll != null)
 				OnEndScroll(this, eventData);
-		}
-
-		public Scrollbar GetVerticalScrollbar()
-		{
-			return verticalScrollbar;
 		}
 
 		public delegate void ScrollPointerHandler(object sender, PointerEventData eventData);
