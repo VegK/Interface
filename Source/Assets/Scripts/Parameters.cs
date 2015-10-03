@@ -16,6 +16,9 @@ public class Parameters : MonoBehaviour
 	public ToolTipController ToolTip;
 	public Canvas MainCanvas;
 
+	[Space(10)]
+	public Rarity RarityColor;
+
 	public static Parameters Instance
 	{
 		get
@@ -46,4 +49,12 @@ public class Parameters : MonoBehaviour
     }
 	#endregion
 	#endregion
+
+	[Serializable]
+	public class Rarity
+	{
+		public Color Rare = Color.blue;
+		public Color Epic = Color.magenta;
+		public Color Legendary = new Color(1, 0.5f, 0);
+	}
 }

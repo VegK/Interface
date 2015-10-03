@@ -7,6 +7,7 @@
 		public int IndexCell { get; set; }
 		public int IndexItem { get; set; }
 		public int Modification { get; set; }
+		public int RarityItem { get; set; }
 		#endregion
 		#region Private
 
@@ -31,7 +32,8 @@
 			{
                 res.IndexItem = item.BaseItem.Index;
 				res.Modification = item.Modification;
-			}
+				res.RarityItem = (int)item.RarityItem;
+            }
 
 			return res;
 		}
@@ -41,8 +43,12 @@
 		/// <param name="cell">Ячейка.</param>
 		public void MoveMoreParams(CellController cell)
 		{
-			if (cell.Item != null)
-				cell.Item.Modification = Modification;
+			var item = cell.Item;
+            if (item != null)
+			{
+				item.Modification = Modification;
+				item.RarityItem = (Rarity)RarityItem;
+			}
 		}
 		#endregion
 		#region Private

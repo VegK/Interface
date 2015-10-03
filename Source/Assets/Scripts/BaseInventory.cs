@@ -79,6 +79,8 @@ public abstract class BaseInventory : MonoBehaviour
 		{
 			clone = Instantiate(item);
 			clone.BaseItem = item.BaseItem;
+			// TODO: Случайно задаём редкость предмета.
+			clone.RarityItem = (Rarity)UnityEngine.Random.Range(0, 4);
 			cell.PutItem(clone);
 		}
 		return clone;
@@ -92,7 +94,7 @@ public abstract class BaseInventory : MonoBehaviour
 		if (cell.Item != null)
 		{
 			Destroy(cell.Item.gameObject);
-			LogController.Instance.AddString(String.Format("Предмет \"{0}\" удалён.", cell.Item.name));
+			LogController.Instance.AddString(String.Format("Предмет \"{0}\" удалён.", cell.Item.BaseItem.Name));
 		}
 		cell.Item = null;
 	}
@@ -106,6 +108,7 @@ public abstract class BaseInventory : MonoBehaviour
 		var str = string.Empty;
 		var res = false;
 
+		// TODO: В 50% случаев предмет модифицируется.
 		var rnd = UnityEngine.Random.Range(0, 2);
 		if (rnd == 0)
 		{

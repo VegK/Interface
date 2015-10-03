@@ -29,9 +29,12 @@ public class ToolTipController : MonoBehaviour
 	/// <summary>
 	/// Показать панель описания предмета.
 	/// </summary>
+	/// <param name="position">Позиция панели.</param>
+	/// <param name="sizeItem">Размер предмета.</param>
 	/// <param name="title">Название предмета.</param>
 	/// <param name="description">Описание предмета.</param>
-	public void Show(Vector2 position, Vector2 sizeItem, string title, string description)
+	public void Show(Vector2 position, Vector2 sizeItem, string title,
+		string description)
 	{
 		if (FixedHide)
 			return;

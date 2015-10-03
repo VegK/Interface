@@ -2,7 +2,6 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-
 public class ItemController : MonoBehaviour
 {
 	#region Properties
@@ -49,6 +48,21 @@ public class ItemController : MonoBehaviour
 	/// Уровень модификации предмета.
 	/// </summary>
 	public int Modification { get; set; }
+	/// <summary>
+	/// Редкость предмета.
+	/// </summary>
+	public Rarity RarityItem
+	{
+		get
+		{
+			return _rarityItem;
+        }
+		set
+		{
+			_rarityItem = value;
+			ActivateShine();
+        }
+	}
 	#endregion
 	#region Private
 	private GameObject _cloneMove;
@@ -56,6 +70,8 @@ public class ItemController : MonoBehaviour
 	private bool _produceClone;
 	private Vector2 _size;
 	private CellController _prevSelectedCell;
+
+	private Rarity _rarityItem;
 	#endregion
 	#endregion
 
@@ -66,8 +82,31 @@ public class ItemController : MonoBehaviour
 		if (BaseItem != null)
 		{
 			var pos = transform.position;
-
 			var itemName = BaseItem.Name;
+
+			// Добавляем редкость предмета.
+			var itemRarity = string.Empty;
+			var rgb = string.Empty;
+			var rarityColor = Parameters.Instance.RarityColor;
+			switch (RarityItem)
+			{
+				case Rarity.Rare:
+					rgb = rarityColor.Rare.ToHexStringRGB();
+					itemRarity = "<color=#" + rgb + ">Редкий</color> ";
+					break;
+				case Rarity.Epic:
+					rgb = rarityColor.Epic.ToHexStringRGB();
+					itemRarity = "<color=#" + rgb + ">Эпичный</color> ";
+					break;
+				case Rarity.Legendary:
+					rgb = rarityColor.Legendary.ToHexStringRGB();
+					itemRarity = "<color=#" + rgb + ">Легендарный</color> ";
+					break;
+			}
+			if (!string.IsNullOrEmpty(itemRarity))
+				itemName = itemRarity + itemName;
+
+			// Добавляем уровень модификации.
 			if (Modification > 0)
 				itemName = "<color=red>+" + Modification + "</color> " + itemName;
 
@@ -211,6 +250,33 @@ public class ItemController : MonoBehaviour
 	private void Start()
 	{
 		_size = GetComponent<RectTransform>().sizeDelta;
+	}
+	/// <summary>
+	/// Активировать блеск предмета согласно его редкости.
+	/// </summary>
+	private void ActivateShine()
+	{
+		var shine = ImageItem.GetComponent<Shine>();
+		if (shine == null)
+			return;
+
+		var rarityColor = Parameters.Instance.RarityColor;
+		switch (RarityItem)
+		{
+			default:
+			case Rarity.Normal:
+				break;
+			case Rarity.Epic:
+				shine.ColorShine = rarityColor.Epic;
+				break;
+			case Rarity.Rare:
+				shine.ColorShine = rarityColor.Rare;
+				break;
+			case Rarity.Legendary:
+				shine.ColorShine = rarityColor.Legendary;
+				break;
+		}
+		shine.enabled = (RarityItem != Rarity.Normal);
 	}
 	#endregion
 	#endregion
