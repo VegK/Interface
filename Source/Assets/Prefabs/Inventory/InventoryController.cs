@@ -26,7 +26,7 @@ namespace Inventory
 		{
 			base.Start();
 			LoadInventory();
-        }
+		}
 		private void OnEnable()
 		{
 			ScrollRect.OnBeginScroll += BeginScroll;
@@ -86,7 +86,7 @@ namespace Inventory
 				var item = CreateItem(baseItem);
 				SetItemInCell(item, cell);
 				info.MoveMoreParams(cell);
-            }
+			}
 		}
 		private void BeginScroll(object sender, PointerEventData eventData)
 		{

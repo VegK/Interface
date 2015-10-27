@@ -36,13 +36,13 @@ public class ItemController : MonoBehaviour
 		get
 		{
 			return _produceClone;
-        }
+		}
 		set
 		{
 			if (value)
 				_fixedCell = true;
 			_produceClone = value;
-        }
+		}
 	}
 	/// <summary>
 	/// Уровень модификации предмета.
@@ -56,12 +56,12 @@ public class ItemController : MonoBehaviour
 		get
 		{
 			return _rarityItem;
-        }
+		}
 		set
 		{
 			_rarityItem = value;
 			ActivateShine();
-        }
+		}
 	}
 	#endregion
 	#region Private
@@ -147,7 +147,7 @@ public class ItemController : MonoBehaviour
 			var cell = press as Equipment.EquipmentCellController;
 			if (cell != null)
 				cell.SetBackground(true);
-        }
+		}
 	}
 	public void OnPointerUp(BaseEventData data)
 	{
@@ -163,7 +163,7 @@ public class ItemController : MonoBehaviour
 
 		Parameters.Instance.ToolTip.FixedHide = false;
 		_cloneMove.SetActive(false);
-        ImageItem.gameObject.SetActive(true);
+		ImageItem.gameObject.SetActive(true);
 
 		var inputModule = EventSystem.current.currentInputModule as CustomStandaloneInputModule;
 		CellController enter, press;
@@ -203,7 +203,7 @@ public class ItemController : MonoBehaviour
 
 		Destroy(_cloneMove);
 		_cloneMove = null;
-    }
+	}
 	public void OnDrag(BaseEventData data)
 	{
 		if (FixedCell && !ProduceClone)

@@ -18,5 +18,5 @@ public enum Rarity
 	/// <summary>
 	/// Легендарный.
 	/// </summary>
-    Legendary = 3
+	Legendary = 3
 }

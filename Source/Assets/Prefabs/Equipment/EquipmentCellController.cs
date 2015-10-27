@@ -28,7 +28,7 @@ namespace Equipment
 			if (AvailableImage == null)
 				return;
 			AvailableImage.SetActive(value);
-        }
+		}
 		/// <summary>
 		/// Показать/скрыть изображение заднего фона ячейки.
 		/// </summary>
@@ -64,7 +64,7 @@ namespace Equipment
 		{
 			if (!CheckPutItem(item))
 				return false;
-            return base.PutItem(item);
+			return base.PutItem(item);
 		}
 		#endregion
 		#region Private
@@ -74,7 +74,7 @@ namespace Equipment
 			if (AvailableImage == null)
 				return;
 			AvailableImage.SetActive(false);
-        }
+		}
 
 		private void OnEnable()
 		{

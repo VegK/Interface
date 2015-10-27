@@ -48,7 +48,7 @@ public class EquipmentController : MonoBehaviour
 	/// <param name="typeItem">Тип предмета.</param>
 	/// <param name="nullCell">Выделять только пустые ячейки.</param>
 	/// <param name="item">Не выделять ячейки содержащие данный предмет.</param>
-    public void EnableAvailableCells(ItemType typeItem, bool nullCell, ItemController item)
+	public void EnableAvailableCells(ItemType typeItem, bool nullCell, ItemController item)
 	{
 		foreach (EquipmentCellController cell in _cells)
 		{
@@ -58,7 +58,7 @@ public class EquipmentController : MonoBehaviour
 			if (item != null && item == cell.Item)
 				available = false;
 
-            cell.SetAvailable(available);
+			cell.SetAvailable(available);
 		}
 	}
 	#endregion
@@ -68,11 +68,11 @@ public class EquipmentController : MonoBehaviour
 		_cells = new List<EquipmentCellController>();
 		_cells.AddRange(GetComponentsInChildren<EquipmentCellController>());
 		Load();
-    }
+	}
 	private void OnApplicationQuit()
 	{
 		Save();
-    }
+	}
 	/// <summary>
 	/// Сохранить экипировку.
 	/// </summary>

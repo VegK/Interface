@@ -88,7 +88,7 @@ public class ToolTipController : MonoBehaviour
 	private void Awake()
 	{
 		_sizeToolTip = gameObject.GetComponent<RectTransform>().sizeDelta;
-    }
+	}
 	private void HideToolTip()
 	{
 		gameObject.SetActive(false);

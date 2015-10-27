@@ -46,7 +46,7 @@ public class Parameters : MonoBehaviour
 		_instance = this;
 
 		ToolTip.gameObject.SetActive(false);
-    }
+	}
 	#endregion
 	#endregion
 

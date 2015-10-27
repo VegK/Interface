@@ -26,7 +26,7 @@ public abstract class BaseInventory : MonoBehaviour
 	public void SetHeightContent()
 	{
 		SetHeightContent(Size);
-    }
+	}
 	/// <summary>
 	/// Установить высоту объекта контента.
 	/// </summary>
@@ -161,7 +161,7 @@ public abstract class BaseInventory : MonoBehaviour
 		tex2d.LoadImage(bytes);
 
 		var rect = new Rect(0, 0, tex2d.width, tex2d.height);
-        item.ImageItem.sprite = Sprite.Create(tex2d, rect, Vector2.zero);
+		item.ImageItem.sprite = Sprite.Create(tex2d, rect, Vector2.zero);
 		item.BaseItem = baseItem;
 		return item;
 	}
@@ -181,7 +181,7 @@ public abstract class BaseInventory : MonoBehaviour
 	protected virtual void Start()
 	{
 		Cells = new List<CellController>();
-        CreatingCells();
+		CreatingCells();
 		SetHeightContent();
 	}
 	/// <summary>

@@ -38,7 +38,7 @@ public class LogController : MonoBehaviour
 	{
 		Text.text = value + "\r\n" + Text.text;
 		_newString = true;
-    }
+	}
 
 	public void OnValueChaned(float data)
 	{

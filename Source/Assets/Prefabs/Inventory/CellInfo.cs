@@ -30,10 +30,10 @@
 			var item = cell.Item;
 			if (item != null)
 			{
-                res.IndexItem = item.BaseItem.Index;
+				res.IndexItem = item.BaseItem.Index;
 				res.Modification = item.Modification;
 				res.RarityItem = (int)item.RarityItem;
-            }
+			}
 
 			return res;
 		}
@@ -44,7 +44,7 @@
 		public void MoveMoreParams(CellController cell)
 		{
 			var item = cell.Item;
-            if (item != null)
+			if (item != null)
 			{
 				item.Modification = Modification;
 				item.RarityItem = (Rarity)RarityItem;

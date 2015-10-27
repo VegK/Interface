@@ -65,7 +65,7 @@ public class Shine : MonoBehaviour
 			}
 
 			var t = (Time.time - _timeStartShine) * SpeedShine;
-            _image.color = Color.Lerp(_startColor, _finishColor, t);
+			_image.color = Color.Lerp(_startColor, _finishColor, t);
 			yield return null;
 		}
 	}

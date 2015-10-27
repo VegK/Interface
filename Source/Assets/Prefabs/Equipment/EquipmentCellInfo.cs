@@ -28,7 +28,7 @@
 			res.IndexCell = cell.Index;
 
 			var item = cell.Item;
-            if (item != null)
+			if (item != null)
 			{
 				res.IndexItem = item.BaseItem.Index;
 				res.Modification = item.Modification;
@@ -48,7 +48,7 @@
 			{
 				item.Modification = Modification;
 				item.RarityItem = (Rarity)RarityItem;
-            }
+			}
 		}
 		#endregion
 		#region Private
