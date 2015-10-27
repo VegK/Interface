@@ -91,15 +91,15 @@ public class ItemController : MonoBehaviour
 			switch (RarityItem)
 			{
 				case Rarity.Rare:
-					rgb = rarityColor.Rare.ToHexStringRGB();
+					rgb = ColorUtility.ToHtmlStringRGB(rarityColor.Rare);
 					itemRarity = "<color=#" + rgb + ">Редкий</color> ";
 					break;
 				case Rarity.Epic:
-					rgb = rarityColor.Epic.ToHexStringRGB();
+					rgb = ColorUtility.ToHtmlStringRGB(rarityColor.Epic);
 					itemRarity = "<color=#" + rgb + ">Эпичный</color> ";
 					break;
 				case Rarity.Legendary:
-					rgb = rarityColor.Legendary.ToHexStringRGB();
+					rgb = ColorUtility.ToHtmlStringRGB(rarityColor.Legendary);
 					itemRarity = "<color=#" + rgb + ">Легендарный</color> ";
 					break;
 			}
