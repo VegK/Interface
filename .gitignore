@@ -42,11 +42,12 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-*.meta
+Thumbs.db.meta
 /*/*
 /Source/*
 /Source/Assets/inventory.xml
 /Source/Assets/equipment.xml
 /Source/Assets/UnityVS
+/Source/Assets/UnityVS.meta
 !/Source/Assets
 !/Source/ProjectSettings
